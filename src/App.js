@@ -10,10 +10,10 @@ function App() {
   return (
     <Router>
     <Routes>
-      <Route path="/chatApp" exact element={<Home/>}/>
-      <Route path="/chatApp/signIn" exact element={<SignIn/>}/>
-      <Route path="/chatApp/signUp" exact element={<SignUp/>}/>
-      <Route path="/chatApp/userProfile" exact element={<UserProfile/>}/>
+      <Route path="/chat-app" exact element={<Home/>}/>
+      <Route path="/chat-app/signIn" exact element={<SignIn/>}/>
+      <Route path="/chat-app/signUp" exact element={<SignUp/>}/>
+      <Route path="/chat-app/userProfile" exact element={<UserProfile/>}/>
     </Routes>
     </Router>
   );
