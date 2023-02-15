@@ -13,7 +13,7 @@ const cookies = new Cookies();
 export default function UserProfile() {
   const navigate = useNavigate();
   if(!cookies.get("auth-token")){
-    navigate('/chat-app/signIn')
+    navigate('//signIn')
   }
   const [name, setName] = useState(localStorage.getItem('name'))
   const [email, setEmail] = useState(localStorage.getItem('email'))
@@ -83,21 +83,21 @@ export default function UserProfile() {
     alert("A password reset email has been sent to you")
     await signOut(auth)
     localStorage.clear()
-    navigate('/chat-app/signIn')
+    navigate('/signIn')
   }
   // Log out function
   async function logOut(){
     localStorage.clear();
     cookies.remove('authToken')
     await signOut(auth)
-    .then(() => navigate('/chat-app/SignIn'))
+    .then(() => navigate('/SignIn'))
   }
   return (
     <div className='profile-page'>
       {/* Profile Page Sidebar */}
       <div className="profile-sidebar">
         <button className="mobile-sidebar-btn" onClick={expandSidebar}><img className="sidebar-icon" src={sidebarIcon} alt="Hamburger Menu"/></button>
-        <Link to="/chat-app/">Chat App</Link>
+        <Link to="/">Chat App</Link>
         <div className="profile-btn-wrapper">
           <img className="user-icon" src={userIcon} alt="user icon"/><p>Profile</p>
         </div>

@@ -31,7 +31,7 @@ export default function SignUp() {
 
                 const storageRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
                 await uploadBytes(storageRef, registerProfilePicture)
-                .then(() => navigate('/chat-app/'))
+                .then(() => navigate('/'))
                 
             }catch(err){
                 console.log(err.code)
@@ -51,7 +51,7 @@ export default function SignUp() {
             localStorage.setItem('name', registerName)
             localStorage.setItem('email', res.user.email)
             cookies.set("auth-token", res.user.refreshToken)
-            navigate('/chat-app/')
+            navigate('/')
         })
     }
   return (  
@@ -75,7 +75,7 @@ export default function SignUp() {
             </form>
            
             <div className="already-have-acc-div">
-                <span>Already have an account? <Link to="/chat-app/signIn">Sign In</Link></span>
+                <span>Already have an account? <Link to="/signIn">Sign In</Link></span>
             </div>
         </div>
     </div>

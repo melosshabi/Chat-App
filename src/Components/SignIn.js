@@ -21,7 +21,7 @@ export default function SignIn() {
                 localStorage.setItem('name', res.user.displayName)
                 localStorage.setItem('email', res.user.email)
                 cookies.set("auth-token", res.user.refreshToken)
-                navigate('/chat-app/')
+                navigate('/')
             })
             }catch(err){
                 if(err.code === "auth/wrong-password"){
@@ -41,7 +41,7 @@ export default function SignIn() {
             localStorage.setItem('name', res.user.displayName)
             localStorage.setItem('email', res.user.email)
             cookies.set("auth-token", res.user.refreshToken)
-            navigate('/chat-app/')
+            navigate('/')
         })
     }
   return (
@@ -62,7 +62,7 @@ export default function SignIn() {
             <button className='sign-in-btn'>Sign In</button>
             </form>
             <div className="dont-have-acc-div">
-                <span>Don't have an account? <Link to="/chat-app/signUp">Sign Up</Link></span>
+                <span>Don't have an account? <Link to="/signUp">Sign Up</Link></span>
             </div>
         </div>
     </div>
