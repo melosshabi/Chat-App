@@ -20,6 +20,9 @@
     color:white;
     text-decoration: none;
 }
+.mobile-sidebar-btn{
+    display: none;
+}
 .profile-btn-wrapper{
     height: 10%;
     background-color: rgb(39, 44, 49);
@@ -235,6 +238,9 @@
         width: 40vw;
     }
     .profile-sidebar.expanded *{
+        display: flex;
+    }
+    .mobile-sidebar-btn{
         display: flex;
     }
     .mobile-sidebar-btn{

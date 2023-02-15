@@ -97,7 +97,7 @@ export default function UserProfile() {
       {/* Profile Page Sidebar */}
       <div className="profile-sidebar">
         <button className="mobile-sidebar-btn" onClick={expandSidebar}><img className="sidebar-icon" src={sidebarIcon}/></button>
-        <Link to="/chat-app/home">Chat App</Link>
+        <Link to="/chat-app/">Chat App</Link>
         <div className="profile-btn-wrapper">
           <img className="user-icon" src={userIcon} alt="user icon"/><p>Profile</p>
         </div>
