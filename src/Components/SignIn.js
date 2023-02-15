@@ -62,7 +62,7 @@ export default function SignIn() {
             <button className='sign-in-btn'>Sign In</button>
             </form>
             <div className="dont-have-acc-div">
-                <span>Don't have an account? <Link to="/chatapp/signUp">Sign Up</Link></span>
+                <span>Don't have an account? <Link to="/chat-app/signUp">Sign Up</Link></span>
             </div>
         </div>
     </div>

@@ -94,7 +94,7 @@ export default function Home() {
       {isRoomSelected && <button className='leave-room-btn' onClick={() => leaveRoom()}><img src={logoutIcon}/>Leave Room</button>}
         <div className="user-info">
           <div className="user-name-pfp"> 
-          <Link to="/chatapp/userProfile"><img className="user-icon" src={loggedUserProfilePicture} alt="User Icon"/></Link>
+          <Link to="/chat-app/userProfile"><img className="user-icon" src={loggedUserProfilePicture} alt="User Icon"/></Link>
           <p>{localStorage.getItem('name')}</p>
           <div className="sign-out-div">
           <button className='logout-btn' onClick={logOut}><img className="logout-img" src={logoutIcon} alt="log out icon"/></button>
@@ -104,7 +104,7 @@ export default function Home() {
             <button className='more-options-btn' onClick={() => showMoreOptions()}>···</button>
             <div className="option-list-div">
               <ul>
-                <li><Link className='view-profile-btn' to="/chatapp/userProfile">View Profile</Link></li>
+                <li><Link className='view-profile-btn' to="/chat-app/userProfile">View Profile</Link></li>
               </ul>
             </div>
           </div>
@@ -119,7 +119,7 @@ export default function Home() {
           <button className="mobile-sidebar-btn" onClick={() => toggleMobileSidebar()}><img src={sidebarIcon}/></button>
 
           <div className="user-info-mobile">
-          <Link to="/chatapp/userProfile"><img className="user-icon-mobile" src={loggedUserProfilePicture} alt="User Icon"/></Link>
+          <Link to="/chat-app/userProfile"><img className="user-icon-mobile" src={loggedUserProfilePicture} alt="User Icon"/></Link>
           <p>{localStorage.getItem('name')}</p>
           <div className="sign-out-div-mobile">
           <button className='logout-btn-mobile' onClick={logOut}><img className="logout-img-mobile" src={logoutIcon} alt="log out icon"/></button>
@@ -128,7 +128,7 @@ export default function Home() {
             <button className='more-options-btn-mobile' onClick={() => showMoreOptionsMobile()}>···</button>
             <div className="option-list-div-mobile">
               <ul>
-                <li><Link className='view-profile-btn-mobile' to="chatapp/userProfile">View Profile</Link></li>
+                <li><Link className='view-profile-btn-mobile' to="chat-app/userProfile">View Profile</Link></li>
               </ul>
             </div>
           </div>

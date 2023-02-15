@@ -13,7 +13,7 @@ const cookies = new Cookies();
 export default function UserProfile() {
   const navigate = useNavigate();
   if(!cookies.get("auth-token")){
-    navigate('/chatapp/signIn')
+    navigate('/chat-app/signIn')
   }
   const [name, setName] = useState(localStorage.getItem('name'))
   const [email, setEmail] = useState(localStorage.getItem('email'))
@@ -97,7 +97,7 @@ export default function UserProfile() {
       {/* Profile Page Sidebar */}
       <div className="profile-sidebar">
         <button className="mobile-sidebar-btn" onClick={expandSidebar}><img className="sidebar-icon" src={sidebarIcon}/></button>
-        <Link to="/chatapp/home">Chat App</Link>
+        <Link to="/chat-app/home">Chat App</Link>
         <div className="profile-btn-wrapper">
           <img className="user-icon" src={userIcon} alt="user icon"/><p>Profile</p>
         </div>
