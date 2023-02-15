@@ -31,7 +31,7 @@ export default function SignUp() {
 
                 const storageRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
                 await uploadBytes(storageRef, registerProfilePicture)
-                .then(() => navigate('/chatapp/home'))
+                .then(() => navigate('/chat-app/home'))
                 
             }catch(err){
                 console.log(err.code)
@@ -51,7 +51,7 @@ export default function SignUp() {
             localStorage.setItem('name', registerName)
             localStorage.setItem('email', res.user.email)
             cookies.set("auth-token", res.user.refreshToken)
-            navigate('/chatapp/home')
+            navigate('/chat-app/home')
         })
     }
   return (  

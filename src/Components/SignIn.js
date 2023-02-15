@@ -21,7 +21,7 @@ export default function SignIn() {
                 localStorage.setItem('name', res.user.displayName)
                 localStorage.setItem('email', res.user.email)
                 cookies.set("auth-token", res.user.refreshToken)
-                navigate('/chatapp/home')
+                navigate('/chat-app/home')
             })
             }catch(err){
                 if(err.code === "auth/wrong-password"){
@@ -41,7 +41,7 @@ export default function SignIn() {
             localStorage.setItem('name', res.user.displayName)
             localStorage.setItem('email', res.user.email)
             cookies.set("auth-token", res.user.refreshToken)
-            navigate('/chatapp/home')
+            navigate('/chat-app/home')
         })
     }
   return (

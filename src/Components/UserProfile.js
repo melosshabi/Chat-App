@@ -83,14 +83,14 @@ export default function UserProfile() {
     alert("A password reset email has been sent to you")
     await signOut(auth)
     localStorage.clear()
-    navigate('/chatapp/signIn')
+    navigate('/chat-app/signIn')
   }
   // Log out function
   async function logOut(){
     localStorage.clear();
     cookies.remove('authToken')
     await signOut(auth)
-    .then(() => navigate('/chatApp/SignIn'))
+    .then(() => navigate('/chat-app/SignIn'))
   }
   return (
     <div className='profile-page'>

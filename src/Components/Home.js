@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Link} from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Chats from './Chats'
@@ -19,24 +19,27 @@ export default function Home() {
   const [isRoomSelected, setIsRoomSelected] = useState(false);
   const [loggedUserProfilePicture, setLoggedUserProfilePicture] = useState('');
 
+  useEffect(()=>{
+    if(!cookies.get("auth-token")){
+      navigate("/chat-app/signIn")
+    }
 
-  if(!cookies.get("auth-token")){
-    navigate("/chatapp/signIn")
-  }
-  auth.onAuthStateChanged(()=>{
-    (async function fetchLoggedUserProfilePicture(){
-      const profilePictureRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
-      await getDownloadURL(profilePictureRef)
-      .then(url =>{
-        setLoggedUserProfilePicture(url)
-      })
-    })();
-  })
+    auth.onAuthStateChanged(()=>{
+      (async function fetchLoggedUserProfilePicture(){
+        const profilePictureRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
+        await getDownloadURL(profilePictureRef)
+        .then(url =>{
+          setLoggedUserProfilePicture(url)
+        })
+      })();
+    })
+  }, [])
+  
   async function logOut(){
     await signOut(auth).then(()=>{
       localStorage.clear();
       cookies.remove('auth-token')
-      navigate("/chatapp/signIn")
+      navigate("/chat-app/signIn")
     })
   }
    function enterRoom(e){
