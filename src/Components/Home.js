@@ -19,11 +19,10 @@ export default function Home() {
   const [isRoomSelected, setIsRoomSelected] = useState(false);
   const [loggedUserProfilePicture, setLoggedUserProfilePicture] = useState('');
 
+  if(!cookies.get("auth-token")){
+    navigate("/chat-app/signIn")
+  }
   useEffect(()=>{
-    if(!cookies.get("auth-token")){
-      navigate("/chat-app/signIn")
-    }
-
     auth.onAuthStateChanged(()=>{
       (async function fetchLoggedUserProfilePicture(){
         const profilePictureRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
@@ -91,7 +90,7 @@ export default function Home() {
     <div className='home-container'>
       {/* Sidebar */}
       <div className="sidebar">
-      {isRoomSelected && <button className='leave-room-btn' onClick={() => leaveRoom()}><img src={logoutIcon}/>Leave Room</button>}
+      {isRoomSelected && <button className='leave-room-btn' onClick={() => leaveRoom()}><img src={logoutIcon} alt="Log Out"/>Leave Room</button>}
         <div className="user-info">
           <div className="user-name-pfp"> 
           <Link to="/chat-app/userProfile"><img className="user-icon" src={loggedUserProfilePicture} alt="User Icon"/></Link>
@@ -115,8 +114,8 @@ export default function Home() {
 
       <div className="sidebar-mobile">
         
-          {isRoomSelected && <button className='leave-room-btn-mobile' onClick={() => leaveRoom()}><img src={logoutIcon}/>Leave Room</button>}
-          <button className="mobile-sidebar-btn" onClick={() => toggleMobileSidebar()}><img src={sidebarIcon}/></button>
+          {isRoomSelected && <button className='leave-room-btn-mobile' onClick={() => leaveRoom()}><img src={logoutIcon} alt="Log out"/>Leave Room</button>}
+          <button className="mobile-sidebar-btn" onClick={() => toggleMobileSidebar()}><img src={sidebarIcon} alt="Hamburger Menu"/></button>
 
           <div className="user-info-mobile">
           <Link to="/chat-app/userProfile"><img className="user-icon-mobile" src={loggedUserProfilePicture} alt="User Icon"/></Link>

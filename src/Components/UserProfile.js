@@ -96,7 +96,7 @@ export default function UserProfile() {
     <div className='profile-page'>
       {/* Profile Page Sidebar */}
       <div className="profile-sidebar">
-        <button className="mobile-sidebar-btn" onClick={expandSidebar}><img className="sidebar-icon" src={sidebarIcon}/></button>
+        <button className="mobile-sidebar-btn" onClick={expandSidebar}><img className="sidebar-icon" src={sidebarIcon} alt="Hamburger Menu"/></button>
         <Link to="/chat-app/">Chat App</Link>
         <div className="profile-btn-wrapper">
           <img className="user-icon" src={userIcon} alt="user icon"/><p>Profile</p>
@@ -114,7 +114,7 @@ export default function UserProfile() {
       {/* Profile Details */}
       <div className="profile-details">
         <div className="profile-picture-wrapper">
-          <img className='profile-picture' src={profilePicture} alt="Profile Picture"/>
+          <img className='profile-picture' src={profilePicture} alt="Profile"/>
           <div className="update-profile-picture-div">
             <p>Upload a new picture</p>
           <input type="file" onChange={e => enableUpdatePictureBtn(e.target.files[0])}/>

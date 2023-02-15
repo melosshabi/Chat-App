@@ -61,7 +61,7 @@ export default function SignUp() {
             <span>Sign up With</span>
             <div className="sign-up-with-google-div" onClick={signUpWithGoogle}>
                 <div className="google-icon-wrapper">
-                <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+                <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google"/>
                 </div>
                 <p>Google</p>
             </div>
