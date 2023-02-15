@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/chatApp/signIn/static/css/main.8cae51be.css",
-    "main.js": "/chatApp/signIn/static/js/main.19b88685.js",
-    "static/media/logout-icon.svg": "/chatApp/signIn/static/media/logout-icon.d66694e430e5b987bf6aef9360a48d11.svg",
-    "static/media/user-icon.svg": "/chatApp/signIn/static/media/user-icon.32bda83339b76cc357271df402f830f9.svg",
-    "index.html": "/chatApp/signIn/index.html",
-    "main.8cae51be.css.map": "/chatApp/signIn/static/css/main.8cae51be.css.map",
-    "main.19b88685.js.map": "/chatApp/signIn/static/js/main.19b88685.js.map"
+    "main.css": "/chatApp/static/css/main.8cae51be.css",
+    "main.js": "/chatApp/static/js/main.3abb39af.js",
+    "static/media/logout-icon.svg": "/chatApp/static/media/logout-icon.d66694e430e5b987bf6aef9360a48d11.svg",
+    "static/media/user-icon.svg": "/chatApp/static/media/user-icon.32bda83339b76cc357271df402f830f9.svg",
+    "index.html": "/chatApp/index.html",
+    "main.8cae51be.css.map": "/chatApp/static/css/main.8cae51be.css.map",
+    "main.3abb39af.js.map": "/chatApp/static/js/main.3abb39af.js.map"
   },
   "entrypoints": [
     "static/css/main.8cae51be.css",
-    "static/js/main.19b88685.js"
+    "static/js/main.3abb39af.js"
   ]
 }
