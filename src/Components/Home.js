@@ -19,10 +19,11 @@ export default function Home() {
   const [isRoomSelected, setIsRoomSelected] = useState(false);
   const [loggedUserProfilePicture, setLoggedUserProfilePicture] = useState('');
 
-  if(!cookies.get("auth-token")){
-    navigate("/signIn")
-  }
   useEffect(()=>{
+    if(!cookies.get("auth-token")){
+      navigate("/signIn")
+      console.log("balls")
+    }
     auth.onAuthStateChanged(()=>{
       (async function fetchLoggedUserProfilePicture(){
         const profilePictureRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)

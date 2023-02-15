@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import {auth, storage, db} from '../firebase-config'
-import { collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp, Timestamp } from 'firebase/firestore'
+import { collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore'
 import {getDownloadURL, ref} from 'firebase/storage'
 import sendButton from '../SVGs/send-button.png'
 import { nanoid } from 'nanoid'
@@ -29,7 +29,7 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
             let hours = Math.floor((timeInMillis / 1000 / 60 / 60) % 24) + 1;
             let minutes = Math.floor((timeInMillis / 1000 / 60) % 60);
             
-            if(hours == 24){
+            if(hours === 24){
               hours = "00";
             }
             if(minutes.toString().length === 1) minutes = `0${minutes}`

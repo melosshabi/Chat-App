@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import '../Styles/user-profile.css'
 import userIcon from '../SVGs/user-icon.svg'
@@ -12,9 +12,12 @@ import { sendPasswordResetEmail, signOut, updateEmail, updateProfile } from 'fir
 const cookies = new Cookies();
 export default function UserProfile() {
   const navigate = useNavigate();
+
+  useEffect(()=>{
   if(!cookies.get("auth-token")){
-    navigate('//signIn')
-  }
+    navigate('/signIn')
+  }}, [])
+
   const [name, setName] = useState(localStorage.getItem('name'))
   const [email, setEmail] = useState(localStorage.getItem('email'))
   const [profilePicture, setProfilePicture] = useState();
