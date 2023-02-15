@@ -48,8 +48,9 @@
     bottom:1px;
     right:5px;
     font-size: .8em;
+    color:rgba(255, 255, 255, .8);
+    font-style:italic;
 }
-
 /* Logged in User's Styles */
 .logged-user-message{
     height: fit-content;
