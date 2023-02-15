@@ -9,10 +9,10 @@ function App() {
   return (
     <HashRouter>
     <Routes>
-      <Route path="/chat-app" exact element={<Home/>}/>
-      <Route path="/chat-app/signIn" exact element={<SignIn/>}/>
-      <Route path="/chat-app/signUp" exact element={<SignUp/>}/>
-      <Route path="/chat-app/userProfile" exact element={<UserProfile/>}/>
+      <Route path="/" exact element={<Home/>}/>
+      <Route path="/signIn" exact element={<SignIn/>}/>
+      <Route path="/signUp" exact element={<SignUp/>}/>
+      <Route path="/userProfile" exact element={<UserProfile/>}/>
     </Routes>
     </HashRouter>
   );
