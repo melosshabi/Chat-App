@@ -1,0 +1,481 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+
+/* Sidebar Styles */
+.home-container{
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Figtree', sans-serif;
+    display: flex;
+    overflow: hidden;
+    background-color: #272c31;
+}
+.sidebar{
+    width: 20%;
+    height: 101vh;
+    background-color: #303841;
+    border-right: 1px solid white;
+    display: flex;
+    align-items: flex-end;
+    position:relative;
+}
+.sidebar-mobile{
+    display: none;
+}
+.leave-room-btn{
+    width: 40%;
+    height: 5%;
+    position: absolute;
+    top:15px;
+    left:5px;
+    background-color: rgb(46, 51, 58);
+    padding:0 5px;
+    border:none;
+    border-radius: 5px;
+    color:white;
+    font-size: 1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.leave-room-btn img{
+    width: 25px;
+    transform: rotate(180deg);
+}
+.user-info{
+    height: 6%;
+    width: 100%;
+    color:white;
+    background-color: #2e333a;
+    padding-bottom: 2px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.user-name-pfp{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin:0 3%;
+}
+.user-icon{
+    width: 35px;
+    margin-right: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.sign-out-div{
+    margin-left: 10px;
+}
+.logout-btn{
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.logout-img{
+    width: 20px;
+}
+.more-options-div{
+    margin-right: 10%;
+    position: relative;
+}
+.more-options-btn{
+    height: 30px;
+    background: none;
+    border:none;
+    border-radius: 6px;
+    color:white;
+    font-size: 2em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 250ms;
+}
+.more-options-btn:hover{
+    background: rgba(255, 255, 255, .1);
+}
+.option-list-div{
+    width: 150px;
+    height: 50px;
+    background-color: rgb(39, 44, 49);
+    position:absolute;
+    right:-55px;
+    top:-68px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, .5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index:1;
+}
+.option-list-div ul{
+    list-style: none;
+}
+.view-profile-btn{
+    padding:15px 32px;
+    background: none;
+    color:white;
+    border:none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: none;
+}
+.view-profile-btn:hover{
+    background-color: rgba(255, 255, 255, .1);
+}
+/* Room selection and chat styles */
+.room-selection-wrapper{
+    width: 80%;
+    height: 100%;
+    background-color: #272c31;
+    color:white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.room-selection-form-wrapper{
+    height: 40%;
+    width: 40%;
+    padding:25px 40px;
+    background-color: #2e333a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    border-radius: 5px;
+}
+.room-input-form{
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.room-input{
+    font-size: 1.1rem;
+    padding:5px 10px;
+    border:none;
+    border-radius: 5px;
+}
+.room-input:focus{
+    outline:none;
+}
+.enter-room-btn{
+    font-size: 1.5rem;
+    padding:5px 50px;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    background:rgb(48,56,65);
+    color:white;
+    box-shadow:3px 2px 5px rgba(255, 255, 255, .2);
+    transition: all 200ms;
+}
+.enter-room-btn:hover{
+    transform: translate(3px, -3px);
+}
+@media only screen and (max-width:1280px) and (max-height:1024px){
+    .sidebar{
+        width:30vw;
+    }    
+}
+/* Nest Hub Max */
+@media only screen and (max-width:1280px) and (max-height:800px){
+    .sidebar{
+        /* /* margin-top: 5px; */
+        height: 102vh;
+    }
+    .leave-room-btn{
+        margin-top: 15px;;
+    }
+    .user-info{
+        height: 7%;
+        padding-bottom: 4px;
+    }
+}
+/* Nest Hub */
+@media only screen and (max-width:1024px) and (max-height:600px){
+    .sidebar{
+        height: 100vh;
+        padding-bottom: 5vh;
+    }
+    .leave-room-btn{
+        top:30px;
+        width: 50%;
+        height: 8%;
+    }
+    .room-title-wrapper{
+        height: 10vh;
+        margin-top: 4%;
+    }
+    .user-info{
+        height: 12%;
+        align-items: center;
+        padding-top:20px;
+        padding-bottom: 20px;
+        margin-bottom: -6vh;
+    }
+    .user-name-pfp{
+        height: 70%;
+    }
+}
+/* Surface Pro 7 */
+@media only screen and (max-width:912px) and (max-height:1368px){
+    .sidebar{
+        display: none;
+    }
+    .sidebar-mobile{
+        height: 100vh;
+        width: 8vw;
+        background-color: rgb(48, 56, 65);
+        border-right: 1px solid white;
+        display: flex;
+        align-items: flex-end;
+        position: absolute;
+        z-index: 2;
+        box-shadow: 5px 0px 15px black;
+        overflow: hidden;
+        transition: all 200ms;
+    }
+    .sidebar-mobile-expanded{
+        width: 65vw;
+        transform: translateX(0);
+    }
+    .leave-room-btn-mobile{
+        width: 35%;
+        height: 5%;
+        background-color: rgb(46, 51, 58);
+        color:white;
+        font-size: 1.5em;
+        border: none;
+        border-radius: 5px;
+        display: none;
+        align-items: center;
+        justify-content: space-around;
+        position: absolute;
+        top:10px;
+        left: 10px;
+    }
+    .leave-room-btn-mobile img{
+        width: 25px;
+        transform: rotate(180deg);
+    }
+    .mobile-sidebar-btn{
+        width: 60px;
+        height: 50px;
+        background: none;
+        border:none;
+        position: absolute;
+        right: 10px;
+        top:10px;
+    }
+    .room-selection-wrapper{
+        width: 100vw;
+    }
+    .room-selection-form-wrapper{
+        width: 60%;
+    }
+    .room-selection-form-wrapper input{
+        width: 20%;
+    }
+    .user-info-mobile{
+        height: 7%;
+        width: 100%;
+        background-color: #2e333a;
+        color:white;
+        font-size: 1.8em;
+        display: none;
+        align-items: center;
+        position: relative;
+    }
+    .user-icon-mobile{
+        width: 55px;
+        margin:0 10px;
+        border-radius: 50%;
+    }
+    .sign-out-div-mobile{
+        margin-left: 15px;
+    }
+    .logout-btn-mobile{
+        background: none;
+        border:none;
+    }
+    .logout-img-mobile{
+        width: 30px;
+    }
+    .more-options-div-mobile{
+        position: absolute;
+        right: 15px;
+    }
+    .more-options-btn-mobile{
+        background: none;
+        border:none;
+        border-radius: 5px;
+        font-size: 2em;
+        color:white;
+        transition: all 100ms;
+    }
+    .more-options-btn-mobile:active{
+        background-color: rgba(255, 255, 255, .2);
+    }
+    /* The div with the View Profile Button */
+    .option-list-div-mobile{
+        width: 350%;
+        height: 100%;
+        position: absolute;
+        top:-60px;
+        left:-130px;
+        background-color: rgb(39, 44, 49);
+        box-shadow: 1px 1px 3px white;
+        border-radius: 5px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+    .option-list-div-mobile ul{
+        list-style: none;
+    }
+    .option-list-div-mobile a{
+        color:white;
+        text-decoration: none;
+    }
+}
+/* iPad Air */
+@media only screen and (max-width:820px) and (max-height:1180px){
+    .sidebar-mobile-expanded{
+        width: 70vw;
+    }
+    .mobile-sidebar-btn{
+        right: 3px;
+    }
+    .user-info-mobile{
+        height: 8%;
+    }
+    .user-info-mobile p, .option-list-div-mobile{
+        font-size: .9em;
+    }
+}
+/* Surface Duo */
+@media only screen and (max-width:540px) and (max-height:720px){
+    /* Sidebar Styles */
+    .sidebar-mobile{
+        width: 10vw;
+    }
+    .sidebar-mobile-expanded{
+        width: 90vw;
+    }
+    .mobile-sidebar-btn{
+        right: -2px;
+    }
+    .mobile-sidebar-btn img{
+        width: 35px;
+    }
+    .leave-room-btn-mobile{
+        font-size: 1em;
+        width: 40%;
+        height: 8%;
+    }
+    .user-info-mobile{
+        height: 10vh;
+        font-size: 1.4em;
+    }
+    .user-info-mobile img{
+        width: 35px;
+    }
+    .logout-btn-mobile img{
+        width:25px;
+    }
+    /* The div with the View Profile Button */
+    .option-list-div-mobile{
+        left:-100px;
+    }
+    /* Room Selection Form Styles */
+    .room-selection-wrapper{
+        width: 90vw;
+        margin-left:12vw;
+    }
+}
+/* iPhone XR */
+@media only screen and (max-width:414px) and (max-height:896px){
+    /* Sidebar Styles */
+    .sidebar-mobile{
+        width: 15vw;
+        box-shadow: none;
+    }
+    .sidebar-mobile-expanded{
+        width: 100vw;
+    }
+    .leave-room-btn-mobile{
+        width: 45%;
+        height: 7%;
+    }
+    .user-info-mobile{
+        height: 10vh;
+    }
+    .user-info-mobile p{
+        font-size: .7em;
+    }
+    .user-icon-mobile{
+        width: 45px;
+    }
+    .logout-img-mobile{
+        width: 23px;
+    }
+    /* The div with the View Profile Button */
+    .option-list-div-mobile{
+        height: 55px;
+        top:-70px;
+        font-size: .8em;
+    }
+    /* Room selection Form Styles */
+    .room-selection-wrapper{
+        width: 85vw;
+        margin-left:15vw;
+    }
+    .room-selection-form-wrapper{
+        width:70%
+    }
+    .room-selection-form-wrapper input{
+        width: 50%;
+    }
+    .enter-room-btn{
+        width: 100%;
+    }
+}
+/* Galaxy S21FE */
+@media only screen and (max-width:360px) and (max-height:800px){
+    /* Sidebar styles */
+    .leave-room-btn-mobile{
+        width: 45%;
+        font-size: 1.2em;
+    }
+    .mobile-sidebar-btn{
+        right: -5px;
+    }
+    .mobile-sidebar-btn img{
+        width: 40px;        
+    }
+    .more-options-btn-mobile{
+        font-size: 1.5em;
+    }
+    /* The div with the View Profile Button */
+    .option-list-div-mobile{
+        left: -95px;
+        font-size: .7em;
+    }
+    /* Room Selection Styles */
+    .enter-room-btn{
+        font-size: 1.3em;
+    }
+}
+/* Galaxy S7 */
+@media only screen and (max-width:360px) and (max-height:640px){
+    .mobile-sidebar-btn img{
+        width: 35px;
+    }
+}

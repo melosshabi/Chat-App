@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+*{
+  margin:0;
+  padding:0;
+}
+.sign-in-container{
+    height: 100vh;
+    width: 100vw;
+    background-color:rgb(39, 44, 49);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Figtree', sans-serif;
+}
+
+.sign-in-div{
+    width: 35%;
+    height: 75%;
+    background-color: rgb(48, 56, 65);
+    color:white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.sign-in-div h1{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.sign-in-with-google-div{
+    width: 30%;
+    height: 8%;
+    background-color: rgb(76, 87, 99);
+    box-shadow: 1px 1px 5px black;
+    border-radius: 5px;
+    margin-top: 5%;
+    margin-bottom: 3%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    user-select: none;
+    transition: all 400ms;
+}
+.google-icon-wrapper{
+    margin-right: 5%;
+}
+.google-icon{
+    display: inline-block;
+    vertical-align: middle;
+}
+.sign-in-with-google-div:hover{
+    background-color: #5194e9;
+    color:white;
+}
+form{
+    /* background-color: red; */
+    height: 50%;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.email-input, .password-input{
+    width: 90%;
+    padding:10px 10px;
+    font-size: 1.1rem;
+    background-color: rgba(230, 230, 230, .1);
+    color:white;
+    border: 1px solid rgba(255, 255, 255, .3);
+    border-radius: 8px;
+    transition: all 200ms;
+}
+.email-input:focus, .password-input:focus{
+    outline:none;
+    padding:13px 10px;
+}
+.sign-in-button-wrapper{
+    width: 55%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sign-in-btn{
+    font-size: 1.3rem;
+    padding:15px;
+    width: 85%;
+    cursor: pointer;
+    background-color: rgb(39, 44, 49);
+    color:white;
+    border:none;
+    border-radius: 8px;
+    box-shadow:2px 2px 5px rgba(0, 0, 0);
+    transition: all 300ms;
+}
+.sign-in-btn:hover{
+    transform: translate(3px, -3px);
+}
+.dont-have-acc-div{
+    margin-top: 10%;
+    /* margin-bottom: 15%; */
+}
+.dont-have-acc-div a{
+    text-decoration: none;
+    color:rgba(0, 200, 200);
+    transition:all 300ms;
+}
+.dont-have-acc-div a:hover{
+    color:rgba(0, 250, 250)
+}
+/* 5:4 Monitor  */
+@media only screen and (max-width:1280px) and (max-height:1024px){
+    .sign-in-div{
+        height:90%;
+        width: 60%;
+    }
+    .dont-have-acc-div{
+        margin-bottom: 2%;
+    }
+}
+/* Nest Hub */
+@media only screen and (max-width:1024px) and (max-height:600px){
+    .sign-in-div{
+        height: 95%;
+    }
+    .sign-in-div h1{
+        margin-top:2%;
+    }
+    .email-input, .password-input{
+        padding:8px 10px;
+    }
+    .sign-in-btn{
+        padding:10px;
+    }
+    .dont-have-acc-div{
+        font-size: 1.1rem;
+    }
+}
+/* Surface Pro 7 Portrait */
+@media only screen and (max-width:912px) and (max-height:1368px){
+    .sign-in-div{
+        width: 90%;
+        font-size: 2em;
+    }
+    .sign-in-with-google-div{
+        width: 35%;
+        font-size: 1em;
+    }
+    .google-icon{
+        width: 37px;
+    }
+    form{
+        width: 80%;
+    }
+    .email-input, .password-input{
+        font-size: 1em;
+    }
+    .error-span{
+        font-size: .9em;
+    }
+    .sign-in-btn{
+        font-size: 1.1em;
+    }
+    .dont-have-acc-div{
+        font-size: .9em;
+        margin-top: 14%;
+    }
+}
+/* iPhone XR landscape */
+@media only screen and (max-width:896px) and (max-height:414px) and (orientation:landscape){
+    .sign-in-div{
+        width: 100vw;
+        height: 150vh;
+        margin-top:50vh;
+        border-radius: 0;
+        font-size: 1em;
+    }
+    .sign-in-with-google-div{
+        width: 20%;
+        height: 10%;
+    }
+    .google-icon{
+        width: 25px;
+    }
+}
+/* Galaxy Note 20 Ultra Landscape */
+@media only screen and (max-width:915px) and (max-height:412px) and (orientation:landscape){
+    .sign-in-div{
+        width: 100vw;
+        height: 150vh;
+        margin-top:50vh;
+        border-radius: 0;
+        font-size: 1em;
+    }
+    .sign-in-with-google-div{
+        width: 20%;
+        height: 10%;
+    }
+    .google-icon{
+        width: 25px;
+    }
+}
+/* iPad Air Portrait */
+@media only screen and (max-width:820px) and (max-height:1180px){
+    .sign-in-div{
+        height: 100%;
+        width: 100%;
+        border-radius: 0;
+    }
+}
+/* Galaxy S21FE Landscape */
+@media only screen and (max-width:800px) and (max-height:360px) and (orientation:landscape){
+    .sign-in-div{
+        height: 150vh;
+        /* margin-top:0; */
+        font-size: .9em;
+    }
+}
+/* iPad Mini Portrait */
+@media only screen and (max-width:768px) and (max-height:1024px){
+    .sign-in-div{
+        font-size: 1.6em;
+    }
+}
+/* Galaxy Fold Dual Screen Mode Landscape */
+@media only screen and (max-width:717px) and (max-height:512px) and (orientation:landscape){
+    .sign-in-div{
+        font-size: 1em;
+    }
+    .sign-in-div h1{
+        margin-bottom: 3%;
+    }
+    .sign-in-with-google-div{
+        height: 15%;
+        width: 25%;
+        margin-top: 3%;
+    }
+    .google-icon{
+        width: 25px;
+    }
+    form{
+        width: 80%;
+    }
+}
+/* iPhone SE Landscape */
+@media only screen and (max-width:667px) and (max-height:375px) and (orientation:landscape){
+    .sign-in-div{
+        height: 150vh;
+    }
+    .sign-in-with-google-div{
+        height: 8%;
+    }
+}
+/* Galaxy Fold Closed Landscape */
+@media only screen and (max-width:653px) and (max-heigth:280px) and (orientation:landscape){
+    .sign-in-div{
+        height: 200vh;
+        margin-top:100vh;
+        font-size: 1.1em;
+    }
+    .sign-in-with-google-div{
+        height: 10%;
+        width: 25%;
+
+    }
+    .google-icon{
+        width: 22px;
+    }
+}
+/* Surface Duo Portrait */
+@media only screen and (max-width:540px) and (max-height:720px){
+    .sign-in-div{
+        font-size: 1.2em;
+    }
+    .google-icon{
+        width: 25px;
+    }
+}
+/* iPhone XR Portrait */
+@media only screen and (max-width:414px) and (max-height:896px){
+    .sign-in-div{
+        font-size: 1.1em;
+    }
+    .sign-in-div h1{
+        margin-top:10%;
+        margin-bottom: 10%;
+    }
+    .sign-in-div span{
+        margin-bottom: 5%;
+    }
+    .sign-in-with-google-div{
+        width: 50%;
+        height: 6%;
+    }
+    .google-icon{
+        width: 25px;
+    }
+    form{
+        height: 40%;
+        width: 100%;
+        margin-top: 20%;
+        margin-bottom: 24%;
+    }
+}
+/* Note 20 Ultra Portrait */
+@media only screen and (max-width:412px) and (max-height:915px){
+    .sign-in-div{
+        font-size: 1.1em;
+    }
+    .sign-in-div h1{
+        margin-top:10%;
+        margin-bottom: 10%;
+    }
+    .sign-in-div span{
+        margin-bottom: 5%;
+    }
+    .sign-in-with-google-div{
+        width: 50%;
+        height: 6%;
+    }
+    .google-icon{
+        width: 25px;
+    }
+    form{
+        height: 40%;
+        width: 100%;
+        margin-top: 20%;
+        margin-bottom: 24%;
+    }
+}
+/* Galaxy S7 Landscape */
+@media only screen and (max-width:640px) and (max-height:360px) and (orientation:landscape){
+    .sign-in-with-google-div{
+        height: 8%;
+    }
+}
+/* Galaxy Fold Closed Portrait */
+@media only screen and (max-width:280px){
+    .sign-in-with-google-div{
+        width: 60%;
+    }
+}

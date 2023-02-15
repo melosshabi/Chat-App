@@ -1,0 +1,375 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+.profile-page{
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Figtree', sans-serif;
+    display: flex;
+}
+.profile-sidebar{
+    width: 20vw;
+    height: 100vh;
+    background-color: rgb(48, 56, 65);
+    color:white;
+    text-align: center;
+    position: relative;
+}
+.profile-sidebar a{
+    display: block;
+    margin:10%;
+    font-size: 2.2em;
+    color:white;
+    text-decoration: none;
+}
+.profile-btn-wrapper{
+    height: 10%;
+    background-color: rgb(39, 44, 49);
+    font-size: 1.9em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.profile-details{
+    width: 80vw;
+    height: 100vh;
+    background-color: rgb(39, 44, 49);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.profile-picture-wrapper{
+    width: 50%;
+    height: 25%;
+    background-color: rgb(46, 51, 58);
+    color:white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.profile-picture{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+.update-profile-picture-div{
+    height: 90%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.update-profile-picture-div p{
+    font-size: 1.5em;
+}
+.update-profile-picture-btn{
+    font-size: 1.5em;
+    color:white;
+    background: rgb(48, 56, 65);
+    border: none;
+    border-radius: 10px;
+    box-shadow:2px 2px 3px rgba(255, 255, 255, .2);
+    padding:10px 50px;
+    cursor: pointer;
+    transition: all 200ms;
+}
+.update-profile-picture-btn:hover{
+    background: rgb(61, 71, 82);
+}
+.update-profile-picture-btn:active{
+    background: rgb(49, 57, 66);
+}
+.update-profile-picture-btn:disabled{
+    opacity: .5;
+    cursor: not-allowed;
+}
+.update-profile-picture-btn:disabled:hover{
+    background: rgb(48, 56, 65);
+}
+
+/* User Information */
+.user-information-wrapper{
+    height: 45%;
+    width: 50%;
+    background-color: rgb(46, 51, 58);
+    color:white;
+    border-radius: 10px;
+    text-align: center;
+}
+.user-information-wrapper h2{
+    margin:2% 0;
+}
+.user-information-inputs{
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.user-information-inputs input{
+    font-size: 1.3em;
+    padding:5px 5px;
+    background-color: rgb(66, 73, 81);
+    color:white;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+.user-information-inputs input:disabled{
+    opacity: .5;
+    cursor: not-allowed;
+}
+.reset-password-div{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.reset-password-btn{
+    background: none;
+    border:none;
+    color:white;
+    cursor: pointer;
+    margin-top:5px;
+}
+.reset-password-btn:hover{
+    text-decoration: underline;
+}
+.reset-password-btn:disabled{
+    opacity: .5;
+    cursor: not-allowed;
+}
+.reset-password-btn:disabled:hover{
+    text-decoration: none;
+}
+.edit-btn, .save-btn{
+    font-size: 1.3em;
+    color:white;
+    background-color: rgb(48, 56, 65);
+    border:none;
+    border-radius: 10px;
+    padding:10px 50px;
+    box-shadow: 2px 2px 3px rgba(255, 255, 255, .2);
+    cursor: pointer;
+    transition: all 200ms;
+}
+.edit-btn:hover, .save-btn:hover{
+    background-color: rgb(61, 71, 82);
+}
+.edit-btn:active, .save-btn:active{
+    background-color:rgb(49, 57, 66);
+}
+.logout-div{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.animation-div{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(46, 51, 58);
+    transition: all 200ms;
+}
+.animation-div:hover{
+    background-color: rgb(61, 71, 82);
+}
+.animation-div:hover .logout-btn{
+    transform: translateX(-5px);
+}
+.logout-btn{
+    height: 100%;
+    width: 100%;
+    background: none;
+    color:White;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background-color: rgb(46, 51, 58);
+    transition: all 200ms;
+}
+.logout-btn:hover{
+    background-color: rgb(61, 71, 82);    
+}
+.logout-icon{
+    width: 50px;
+    height: 20px;
+    transform: rotate(180deg);
+}
+/* Media queries */
+/* Nest Hub */
+@media only screen and (max-width:1024px) and (max-height:600px){
+    .profile-sidebar{
+        width: 30vw;
+    }
+    .profile-picture-wrapper{
+        width: 80%;
+        height: 30%;
+    }
+    .user-information-wrapper{
+        width: 80%;
+        height: 55%;
+    }
+}
+/* Surface Pro 7 */
+@media only screen and (max-width:912px) and (max-height:1368px){
+    /* Sidebar Styles */
+    .profile-sidebar{
+        width: 10vw;
+        position: absolute;
+        z-index: 1;
+        box-shadow: 1px 0px 5px rgba(255, 255, 255, .5);
+        transition: all 200ms;
+    }
+    .profile-sidebar a{
+        margin: 20% 0 20% 25%;
+    }
+    .profile-sidebar *:not(.mobile-sidebar-btn, .sidebar-icon), .profile-sidebar a{
+        display: none;
+    }
+    .expanded{
+        width: 40vw;
+    }
+    .profile-sidebar.expanded *{
+        display: flex;
+    }
+    .mobile-sidebar-btn{
+        position: absolute;
+        right:5px;
+        top:5px;
+    }
+    .logout-div{
+        font-size: 1.5em;
+    }
+    .logout-icon{
+        width: 60px;
+        height: 30px;
+    }
+    /* Profile Details Styles */
+    .profile-details{
+        width: 90vw;
+        margin-left: 10vw;
+    }
+    .profile-picture-wrapper{
+        width: 80vw;
+        font-size: 1.5em;
+    }
+    .profile-picture-wrapper input{
+        width: 90%;
+        font-size: 1em;
+        margin-left: 5%;
+    }
+    .user-information-wrapper{
+        width: 80vw;
+        font-size: 1.5em;
+    }
+    .reset-password-btn{
+        font-size: 1em;
+    }
+}
+/* iPad Air */
+@media only screen and (max-width:820px) and (max-height:1180px){
+    .profile-picture-wrapper, .user-information-wrapper{
+        font-size: 1.3em;
+    }
+}
+/* Surface Duo */
+@media only screen and (max-width:540px) and (max-height:720px){
+    /* Sidebar Styles */
+    .mobile-sidebar-btn{
+        right: -3px;
+    }
+    .expanded{
+        width: 50vw;
+    }
+    .logout-div{
+        font-size: 1.1em;
+    }
+    .logout-icon{
+        width: 40px;
+        height: 20px;
+    }
+    /* Profile Details Styles */
+    .profile-picture-wrapper{
+        font-size: 1em;
+        height: 30%;
+    }
+    .profile-picture-wrapper p {
+        text-align: center;
+    }
+    .profile-picture-wrapper input{
+        font-size: .9em;
+    }
+    .user-information-wrapper{
+        height: 50%;
+        font-size: 1em;
+    }
+}
+/* iPhone XR */
+@media only screen and (max-width:414px) and (max-height:896px){
+    /* Sidebar Styles */
+    .profile-sidebar{
+        width: 15vw;
+    }
+    .profile-sidebar a{
+        margin:20% 0 20% 30%;
+    }
+    .mobile-sidebar-btn{
+        right: 0px;
+    }
+    .expanded{
+        width: 100vw;
+    }
+    .logout-div{
+        font-size: 1.2em;
+    }
+    .logout-icon{
+        height: 24px;
+    }
+    /* Profile Details Styles */
+    .profile-details{
+        width: 85vw;
+        margin-left: 15vw;
+    }
+    .profile-picture-wrapper{
+        font-size: 1em;
+    }
+    .profile-picture-wrapper p{
+        text-align: center;
+    }
+    .profile-picture-wrapper input{
+        font-size: .8em;
+    }
+    .update-profile-picture-div{
+        width: 65%;
+    }
+    .profile-picture{
+        width: 100px;
+        height: 100px;
+    }
+    .user-information-wrapper{
+        font-size: 1em;
+    }
+}
+/* S21 FE */
+@media only screen and (max-width:360px) and (max-height:800px){
+    /* Sidebar Styles */
+    .mobile-sidebar-btn{
+        right: 0px;
+        width: 50px;
+    }
+    /* Profile Details Styles */
+    .profile-picture-wrapper{
+        height: 30%;
+    }
+    .update-profile-picture-btn{
+        padding:10px 40px;
+    }
+    .user-information-wrapper{
+        height: 50%;
+    }
+}
