@@ -24,8 +24,7 @@ export default function UserProfile() {
 
   const handleNameChange = e =>{
     let newName = e.target.value;
-    setName(newName)
-    console.log("name", name)
+    setName(newName);
   }
   const handleEmailChange = e =>{
     let newEmail = e.target.value;
