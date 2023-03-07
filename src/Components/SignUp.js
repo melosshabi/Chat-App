@@ -47,7 +47,7 @@ export default function SignUp() {
     async function signUpWithGoogle(){
         await signInWithPopup(auth, googleProvider)
         .then(res => {
-            localStorage.setItem('name', registerName)
+            localStorage.setItem('name', res.user.displayName)
             localStorage.setItem('email', res.user.email)
             cookies.set("auth-token", res.user.refreshToken)
             navigate('/')
