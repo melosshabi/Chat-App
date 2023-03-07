@@ -34,7 +34,6 @@ export default function SignUp() {
                 .then(() => navigate('/'))
                 
             }catch(err){
-                console.log(err.code)
                 if(err.code === "auth/invalid-email"){
                     setError('Invalid Email!')
                   }else if(err.code === "auth/email-already-in-use"){

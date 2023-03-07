@@ -6,7 +6,7 @@ import sendButton from '../SVGs/send-button.png'
 import { nanoid } from 'nanoid'
 import '../Styles/chats.css'
 export default function Chats({loggedUserProfilePicture, selectedRoom}) {
-    
+  
     const [roomMessages, setRoomMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const lastMessageRef = useRef(null);

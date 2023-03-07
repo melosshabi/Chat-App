@@ -74,7 +74,6 @@ export default function UserProfile() {
     .then(() => {
       localStorage.setItem('name', name)
       localStorage.setItem('email', email)
-      console.log(name, email)
       alert("Your Profile Has Been Updated")
       window.location.reload();
     })

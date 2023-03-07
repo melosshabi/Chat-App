@@ -22,7 +22,6 @@ export default function Home() {
   useEffect(()=>{
     if(!cookies.get("auth-token")){
       navigate("/signIn")
-      console.log("balls")
     }
     auth.onAuthStateChanged(()=>{
       (async function fetchLoggedUserProfilePicture(){
