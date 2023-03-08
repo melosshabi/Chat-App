@@ -136,19 +136,18 @@ export default function Home() {
       </div>
 
       {/* Room Selection form */}
-      <div className="room-selection-wrapper">
-        {!isRoomSelected && <div className="room-selection-form-wrapper">
+      {!isRoomSelected && <div className="room-selection-wrapper">
+        <div className="room-selection-form-wrapper">
           <h1>Select a Room</h1>
           <p>1-100</p>
           <form className="room-input-form" onSubmit={e =>{enterRoom(e)}}>
             <input type="number" className="room-input" min="1" max="100" placeholder='Room' value={selectedRoom} onChange={e => setSelectedRoom(e.target.value)}/>
             <button className="enter-room-btn">Enter Room</button>
           </form>
+          </div>        
           </div>}
-
-            {isRoomSelected && <Chats key={nanoid()} loggedUserProfilePicture={loggedUserProfilePicture} selectedRoom={selectedRoom}/>}
-            
-          </div>
+          
+          {isRoomSelected && <Chats key={nanoid()} loggedUserProfilePicture={loggedUserProfilePicture} selectedRoom={selectedRoom}/>}
       </div>
   )
 }

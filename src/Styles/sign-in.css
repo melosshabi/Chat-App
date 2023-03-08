@@ -12,7 +12,6 @@
     justify-content: center;
     font-family: 'Figtree', sans-serif;
 }
-
 .sign-in-div{
     width: 35%;
     height: 75%;
@@ -28,7 +27,6 @@
     margin-top: 5%;
     margin-bottom: 5%;
 }
-
 .sign-in-with-google-div{
     width: 30%;
     height: 8%;
@@ -49,6 +47,7 @@
     margin-right: 5%;
 }
 .google-icon{
+    width: 25px;
     display: inline-block;
     vertical-align: middle;
 }

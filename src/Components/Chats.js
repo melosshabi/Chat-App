@@ -71,6 +71,8 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
               case 11:
                 month = "Dec";
                   break;
+              default:
+                month = "";
             }
         
             messages.push({...doc.data(), dateSent:`${day + " " + month + " " + year}` ,timeSent:`${hours + ":" + minutes}`, id:doc.id})
