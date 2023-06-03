@@ -10,6 +10,7 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
     const [roomMessages, setRoomMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const lastMessageRef = useRef(null);
+
     useEffect(() =>{
         async function fetchMessages(){
         const messagesRef = collection(db, "messages");
@@ -93,12 +94,8 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
         e.preventDefault();
         if(!newMessage) return;
         setNewMessage("")
-        const storageRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
-        let profilePicture;
-        await getDownloadURL(storageRef)
-        .then(res => profilePicture = res)
         const messagesCollection = collection(db, "messages");
-        await addDoc(messagesCollection, {message:newMessage, senderID:auth.currentUser.uid, senderName:auth.currentUser.displayName, senderProfilePicture:profilePicture,roomSentTo:selectedRoom, timeSent:serverTimestamp()})
+        await addDoc(messagesCollection, {message:newMessage, senderID:auth.currentUser.uid, senderName:auth.currentUser.displayName, senderProfilePicture:loggedUserProfilePicture,roomSentTo:selectedRoom, timeSent:serverTimestamp()})
       }  
   return (
     <div className="chats-wrapper">
