@@ -2,8 +2,12 @@ import React, {useState, useEffect, useRef} from 'react'
 import {auth, storage, db} from '../firebase-config'
 import { collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore'
 import {getDownloadURL, ref} from 'firebase/storage'
+// Images
 import sendButton from '../SVGs/send-button.png'
+import plusIcon from '../SVGs/plus.png'
+// ID generator
 import { nanoid } from 'nanoid'
+// CSS
 import '../Styles/chats.css'
 export default function Chats({loggedUserProfilePicture, selectedRoom}) {
   
@@ -127,6 +131,7 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
 
                 <div className="message-form-wrapper">
                   <form className='message-form' onSubmit={e => sendMessage(e)}>
+                  <abbr title='Upload image or video'><img src={plusIcon} className='plus-icon'/></abbr>
                     <input className="message-input" type="text" placeholder='Type a message' maxLength="500" value={newMessage} onChange={e => setNewMessage(e.target.value)}/>
                     <button className="send-button"><img src={sendButton} alt="send icon"/></button>
                   </form>

@@ -5,6 +5,7 @@
     font-family: 'Figtree', sans-serif;
     display: flex;
 }
+/* Sidebar */
 .profile-sidebar{
     width: 20vw;
     height: 100vh;
@@ -20,6 +21,13 @@
     color:white;
     text-decoration: none;
 }
+.arrow-icon{
+    width: 40px;
+    transform: rotate(180deg);
+    display: inline-block;
+    vertical-align: bottom;
+    margin-right: 20px;
+}
 .mobile-sidebar-btn{
     display: none;
 }
@@ -32,6 +40,7 @@
     align-items: center;
     cursor: pointer;
 }
+/* User's information (the right side of the screen) */
 .profile-details{
     width: 80vw;
     height: 100vh;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {Link} from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Chats from './Chats'
 import '../Styles/home.css'
 import logoutIcon from '../SVGs/logout-icon.svg'
@@ -13,16 +13,19 @@ import { nanoid } from 'nanoid'
 const cookies = new Cookies();
 
 export default function Home() {
-  const navigate = useNavigate();
 
-  const [selectedRoom, setSelectedRoom] = useState(Number);
-  const [isRoomSelected, setIsRoomSelected] = useState(false);
-  const [loggedUserProfilePicture, setLoggedUserProfilePicture] = useState('');
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const [selectedRoom, setSelectedRoom] = useState(1)
+  const [isRoomSelected, setIsRoomSelected] = useState(false)
+  const [loggedUserProfilePicture, setLoggedUserProfilePicture] = useState('')
 
   useEffect(()=>{
     if(!cookies.get("auth-token")){
       navigate("/signIn")
     }
+    
     auth.onAuthStateChanged(()=>{
       (async function fetchLoggedUserProfilePicture(){
         const profilePictureRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
@@ -32,6 +35,11 @@ export default function Home() {
         })
       })();
     })
+
+    if(location.state.fromProfile){
+      setIsRoomSelected(location.state.isRoomSelected)
+      setSelectedRoom(location.state.selectedRoom)
+    }
   }, [])
   
   async function logOut(){
@@ -41,6 +49,7 @@ export default function Home() {
       navigate("/signIn")
     })
   }
+
    function enterRoom(e){
     e.preventDefault(); 
     setIsRoomSelected(true);
@@ -51,12 +60,7 @@ export default function Home() {
   }
   // This function toggles the div with the view profile button which is found at the bottom and the sidebar
   function showMoreOptions(){
-    let optionListDiv = document.getElementsByClassName('option-list-div')[0];
-    if(optionListDiv.style.display === "none"){
-      optionListDiv.style.display = "flex";
-    }else{
-      optionListDiv.style.display = "none";
-    }
+    document.querySelector('.option-list-div').classList.toggle('active-option-list')
   }
   // This function toggles the mobile sidebar
   function toggleMobileSidebar(){
@@ -79,12 +83,7 @@ export default function Home() {
   }
   // This function toggles the div with the view profile button for mobile
   function showMoreOptionsMobile(){
-    let optionListDivMobile = document.getElementsByClassName('option-list-div-mobile')[0]
-    if(optionListDivMobile.style.display === "none"){
-      optionListDivMobile.style.display = "flex";
-    }else{
-      optionListDivMobile.style.display = "none";
-    }
+    document.querySelector('.option-list-div-mobile').classList.toggle('active-mobile-option-list')
   }
   return (
     <div className='home-container'>
@@ -103,7 +102,7 @@ export default function Home() {
             <button className='more-options-btn' onClick={() => showMoreOptions()}>···</button>
             <div className="option-list-div">
               <ul>
-                <li><Link className='view-profile-btn' to="/userProfile">View Profile</Link></li>
+                <li><Link className='view-profile-btn' to="/userProfile" state={{isRoomSelected, selectedRoom}}>View Profile</Link></li>
               </ul>
             </div>
           </div>
@@ -127,7 +126,7 @@ export default function Home() {
             <button className='more-options-btn-mobile' onClick={() => showMoreOptionsMobile()}>···</button>
             <div className="option-list-div-mobile">
               <ul>
-                <li><Link className='view-profile-btn-mobile' to="/userProfile">View Profile</Link></li>
+                <li><Link className='view-profile-btn-mobile' to="/userProfile" state={{isRoomSelected, selectedRoom}}>View Profile</Link></li>
               </ul>
             </div>
           </div>

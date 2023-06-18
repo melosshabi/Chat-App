@@ -1,17 +1,27 @@
 import React,{useState, useEffect} from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useLocation } from 'react-router-dom'
+// Firebase
+import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
+import {auth, storage} from '../firebase-config'
+import { sendPasswordResetEmail, signOut, updateEmail, updateProfile } from 'firebase/auth'
+// Cookies library
+import Cookies from 'universal-cookie';
+// CSS
 import '../Styles/user-profile.css'
+// Icons
+import arrow from '../SVGs/arrow.svg'
 import userIcon from '../SVGs/user-icon.svg'
 import logoutIcon from '../SVGs/logout-icon.svg'
 import sidebarIcon from '../SVGs/sidebar-icon.png'
-import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
-import {auth, storage} from '../firebase-config'
-import Cookies from 'universal-cookie';
-import { sendPasswordResetEmail, signOut, updateEmail, updateProfile } from 'firebase/auth'
 
 const cookies = new Cookies();
+
 export default function UserProfile() {
+
   const navigate = useNavigate();
+  const location = useLocation()
+  const isRoomSelected = location.state.isRoomSelected
+  const selectedRoom = location.state.selectedRoom
 
   useEffect(()=>{
   if(!cookies.get("auth-token")){
@@ -37,7 +47,7 @@ export default function UserProfile() {
       .then(res => setProfilePicture(res))
     })
 
-  // This function expands the sidebar
+  // This function expands the sidebar for mobile devices
   function expandSidebar(){
     let mobileSidebar = document.getElementsByClassName('profile-sidebar')[0]
     mobileSidebar.classList.toggle('expanded');
@@ -98,7 +108,7 @@ export default function UserProfile() {
       {/* Profile Page Sidebar */}
       <div className="profile-sidebar">
         <button className="mobile-sidebar-btn" onClick={expandSidebar}><img className="sidebar-icon" src={sidebarIcon} alt="Hamburger Menu"/></button>
-        <Link to="/">Chat App</Link>
+          <Link to="/" state={{isRoomSelected, selectedRoom, fromProfile:true}} className='go-back-link'><img src={arrow} className='arrow-icon'/>Go back</Link>
         <div className="profile-btn-wrapper">
           <img className="user-icon" src={userIcon} alt="user icon"/><p>Profile</p>
         </div>

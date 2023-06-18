@@ -1,6 +1,6 @@
 .chats-wrapper{
     height: 98.5%;
-    width: 80%;
+    width: 80vw;
     text-align: center; 
     color:White;
 }
@@ -97,25 +97,35 @@
     padding:4px 0;
 }
 .message-form{
-    width: 100%;
+    width: 90%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: row;
+    background: rgb(48, 56, 65);
+    border-radius: 5px;
+}
+.plus-icon{
+    cursor: pointer;
+    padding: 0 10px;
+    border-radius: 9px;
+    display: inline-block;
+    vertical-align: middle;
+    transition: all 250ms;
+}
+.plus-icon:hover{
+    background-color: rgba(255, 255, 255, .1);
 }
 .message-input{
     height: 68%;
-    width: 80%;
+    width: 90%;
     background: rgb(48, 56, 65);
     border:none;
-    border-radius: 5px;
+    border-left:1px solid white;
     padding:5px 10px;
     color:white;
     font-size: 1em;
 }
 .message-input:focus{
-    outline:none;
+    outline:1px solid white;
 }
 .send-button{
     background: none;
