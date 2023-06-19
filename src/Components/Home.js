@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import {Link} from 'react-router-dom'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+// Components
 import Chats from './Chats'
-import '../Styles/home.css'
-import logoutIcon from '../SVGs/logout-icon.svg'
-import sidebarIcon from '../SVGs/sidebar-icon.png'
+import Sidebar from './Sidebar'
 import {auth, storage} from '../firebase-config'
-import {signOut} from 'firebase/auth'
 import {getDownloadURL, ref} from 'firebase/storage'
 import Cookies from 'universal-cookie'
 import { nanoid } from 'nanoid'
+// CSS
+import '../Styles/home.css'
 const cookies = new Cookies();
 
 export default function Home() {
 
   const navigate = useNavigate()
-  const location = useLocation()
 
   const [selectedRoom, setSelectedRoom] = useState(1)
   const [isRoomSelected, setIsRoomSelected] = useState(false)
@@ -25,7 +23,13 @@ export default function Home() {
     if(!cookies.get("auth-token")){
       navigate("/signIn")
     }
-    
+    const sessionSelectedRoom = sessionStorage.getItem('selectedRoom')
+    const sessionIsRoomSelected = sessionStorage.getItem('isRoomSelected')
+    if(sessionSelectedRoom && sessionIsRoomSelected){
+      setIsRoomSelected(sessionIsRoomSelected)
+      setSelectedRoom(sessionSelectedRoom)
+    }
+
     auth.onAuthStateChanged(()=>{
       (async function fetchLoggedUserProfilePicture(){
         const profilePictureRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
@@ -34,106 +38,19 @@ export default function Home() {
           setLoggedUserProfilePicture(url)
         })
       })();
-    })
-
-    if(location.state.fromProfile){
-      setIsRoomSelected(location.state.isRoomSelected)
-      setSelectedRoom(location.state.selectedRoom)
-    }
+    })    
   }, [])
   
-  async function logOut(){
-    await signOut(auth).then(()=>{
-      localStorage.clear();
-      cookies.remove('auth-token')
-      navigate("/signIn")
-    })
-  }
-
    function enterRoom(e){
     e.preventDefault(); 
     setIsRoomSelected(true);
-  }
-  function leaveRoom(){
-    setSelectedRoom(0)
-    setIsRoomSelected(prevValue => !prevValue)
-  }
-  // This function toggles the div with the view profile button which is found at the bottom and the sidebar
-  function showMoreOptions(){
-    document.querySelector('.option-list-div').classList.toggle('active-option-list')
-  }
-  // This function toggles the mobile sidebar
-  function toggleMobileSidebar(){
-    let mobileSidebar = document.getElementsByClassName('sidebar-mobile')[0];
-    mobileSidebar.classList.toggle("sidebar-mobile-expanded")
-
-    if(!mobileSidebar.classList.contains('sidebar-mobile-expanded')){
-      let userInfoMobile = document.getElementsByClassName('user-info-mobile')[0];
-      let leaveRoomButton = document.getElementsByClassName('leave-room-btn-mobile')[0];
-
-      userInfoMobile.style.display = "none";
-      leaveRoomButton.style.display = "none";
-    }else{
-      let userInfoMobile = document.getElementsByClassName('user-info-mobile')[0];
-      let leaveRoomButton = document.getElementsByClassName('leave-room-btn-mobile')[0];
-
-      userInfoMobile.style.display = "flex";
-      leaveRoomButton.style.display = "flex";
-    }
-  }
-  // This function toggles the div with the view profile button for mobile
-  function showMoreOptionsMobile(){
-    document.querySelector('.option-list-div-mobile').classList.toggle('active-mobile-option-list')
+    sessionStorage.setItem('selectedRoom', selectedRoom)
+    sessionStorage.setItem('isRoomSelected', selectedRoom)
   }
   return (
     <div className='home-container'>
-      {/* Sidebar */}
-      <div className="sidebar">
-      {isRoomSelected && <button className='leave-room-btn' onClick={() => leaveRoom()}><img src={logoutIcon} alt="Log Out"/>Leave Room</button>}
-        <div className="user-info">
-          <div className="user-name-pfp"> 
-          <Link to="/userProfile"><img className="user-icon" src={loggedUserProfilePicture} alt="User Icon"/></Link>
-          <p>{localStorage.getItem('name')}</p>
-          <div className="sign-out-div">
-          <button className='logout-btn' onClick={logOut}><img className="logout-img" src={logoutIcon} alt="log out icon"/></button>
-          </div>
-          </div>
-          <div className="more-options-div">
-            <button className='more-options-btn' onClick={() => showMoreOptions()}>···</button>
-            <div className="option-list-div">
-              <ul>
-                <li><Link className='view-profile-btn' to="/userProfile" state={{isRoomSelected, selectedRoom}}>View Profile</Link></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Sidebar for mobile Devices */}
-
-      <div className="sidebar-mobile">
-        
-          {isRoomSelected && <button className='leave-room-btn-mobile' onClick={() => leaveRoom()}><img src={logoutIcon} alt="Log out"/>Leave Room</button>}
-          <button className="mobile-sidebar-btn" onClick={() => toggleMobileSidebar()}><img src={sidebarIcon} alt="Hamburger Menu"/></button>
-
-          <div className="user-info-mobile">
-          <Link to="/userProfile"><img className="user-icon-mobile" src={loggedUserProfilePicture} alt="User Icon"/></Link>
-          <p>{localStorage.getItem('name')}</p>
-          <div className="sign-out-div-mobile">
-          <button className='logout-btn-mobile' onClick={logOut}><img className="logout-img-mobile" src={logoutIcon} alt="log out icon"/></button>
-          </div>
-          <div className="more-options-div-mobile">
-            <button className='more-options-btn-mobile' onClick={() => showMoreOptionsMobile()}>···</button>
-            <div className="option-list-div-mobile">
-              <ul>
-                <li><Link className='view-profile-btn-mobile' to="/userProfile" state={{isRoomSelected, selectedRoom}}>View Profile</Link></li>
-              </ul>
-            </div>
-          </div>
-          </div>
-
-      </div>
-
+     
+      <Sidebar isRoomSelected={isRoomSelected} setIsRoomSelected={setIsRoomSelected} setSelectedRoom={setSelectedRoom} loggedUserProfilePicture={loggedUserProfilePicture}/>
       {/* Room Selection form */}
       {!isRoomSelected && <div className="room-selection-wrapper">
         <div className="room-selection-form-wrapper">

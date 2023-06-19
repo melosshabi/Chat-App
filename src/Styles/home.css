@@ -2,15 +2,15 @@
 
 /* Sidebar Styles */
 .home-container{
-    height: 100vh;
-    width: 100vw;
+    height: 100dvh;
+    width: 100dvw;
     font-family: 'Figtree', sans-serif;
     display: flex;
-    overflow: hidden;
+    /* overflow: hidden; */
     background-color: #272c31;
 }
 .sidebar{
-    width: 20vw;
+    width: 20dvw;
     height: 100dvh;
     /* background-color: cyan!important; */
     background-color: #303841;
@@ -209,24 +209,15 @@
 /* Nest Hub */
 @media only screen and (max-width:1024px) and (max-height:600px){
     .sidebar{
-        height: 100vh;
-        padding-bottom: 5vh;
+        height: 100dvh;
     }
     .leave-room-btn{
-        top:30px;
+        top:0px;
         width: 50%;
         height: 8%;
     }
-    .room-title-wrapper{
-        height: 10vh;
-        margin-top: 4%;
-    }
     .user-info{
-        height: 12%;
-        align-items: center;
-        padding-top:20px;
-        padding-bottom: 20px;
-        margin-bottom: -6vh;
+        height: 8%;
     }
     .user-name-pfp{
         height: 70%;
@@ -239,7 +230,7 @@
     }
     .sidebar-mobile{
         height: 100vh;
-        width: 8vw;
+        width: 0;
         background-color: rgb(48, 56, 65);
         border-right: 1px solid white;
         display: flex;
@@ -252,7 +243,6 @@
     }
     .sidebar-mobile-expanded{
         width: 65vw;
-        transform: translateX(0);
     }
     .leave-room-btn-mobile{
         width: 35%;
@@ -374,14 +364,12 @@
 /* Surface Duo */
 @media only screen and (max-width:540px) and (max-height:720px){
     /* Sidebar Styles */
-    .sidebar-mobile{
-        width: 10vw;
-    }
     .sidebar-mobile-expanded{
         width: 90vw;
     }
     .mobile-sidebar-btn{
         right: -2px;
+        height: 35px;
     }
     .mobile-sidebar-btn img{
         width: 35px;
@@ -414,9 +402,8 @@
 /* iPhone XR */
 @media only screen and (max-width:414px) and (max-height:896px){
     /* Sidebar Styles */
-    .sidebar-mobile{
-        width: 15vw;
-        box-shadow: none;
+    .mobile-sidebar-btn{
+        height: 40px;
     }
     .sidebar-mobile-expanded{
         width: 100vw;
@@ -488,5 +475,6 @@
 @media only screen and (max-width:360px) and (max-height:640px){
     .mobile-sidebar-btn img{
         width: 35px;
+        height: 33px;
     }
 }

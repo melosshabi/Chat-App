@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react'
-import { useNavigate, Link, useLocation } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 // Firebase
 import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
 import {auth, storage} from '../firebase-config'
@@ -19,9 +19,6 @@ const cookies = new Cookies();
 export default function UserProfile() {
 
   const navigate = useNavigate();
-  const location = useLocation()
-  const isRoomSelected = location.state.isRoomSelected
-  const selectedRoom = location.state.selectedRoom
 
   useEffect(()=>{
   if(!cookies.get("auth-token")){
@@ -108,9 +105,9 @@ export default function UserProfile() {
       {/* Profile Page Sidebar */}
       <div className="profile-sidebar">
         <button className="mobile-sidebar-btn" onClick={expandSidebar}><img className="sidebar-icon" src={sidebarIcon} alt="Hamburger Menu"/></button>
-          <Link to="/" state={{isRoomSelected, selectedRoom, fromProfile:true}} className='go-back-link'><img src={arrow} className='arrow-icon'/>Go back</Link>
+          <Link to="/" className='go-back-link'><img src={arrow} className='arrow-icon'/>Go back</Link>
         <div className="profile-btn-wrapper">
-          <img className="user-icon" src={userIcon} alt="user icon"/><p>Profile</p>
+          <img className="profile-user-icon" src={userIcon} alt="user icon"/><p>Profile</p>
         </div>
         <div className="logout-div">
           {/* This div will be used for a little animation when the user hovers on the log out div */}

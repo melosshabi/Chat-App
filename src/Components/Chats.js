@@ -1,10 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react'
 import {auth, storage, db} from '../firebase-config'
 import { collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore'
-import {getDownloadURL, ref} from 'firebase/storage'
+// Functions
+import { toggleMobileSidebar } from './Sidebar'
 // Images
 import sendButton from '../SVGs/send-button.png'
 import plusIcon from '../SVGs/plus.png'
+import sidebarIcon from '../SVGs/sidebar-icon.png'
 // ID generator
 import { nanoid } from 'nanoid'
 // CSS
@@ -104,7 +106,9 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
   return (
     <div className="chats-wrapper">
                <div className="messages-wrapper">
-                <div className="room-title-wrapper"><h2>Room {selectedRoom}</h2></div>
+                <div className="room-title-wrapper">
+                <button className="mobile-sidebar-btn mobile-sidebar-btn-chats" onClick={() => toggleMobileSidebar()}><img src={sidebarIcon} alt="Hamburger Menu"/></button>
+                  <h2>Room {selectedRoom}</h2></div>
                 
                 <div className="messages">
                   {roomMessages.map(messageFile =>{
@@ -131,7 +135,9 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
 
                 <div className="message-form-wrapper">
                   <form className='message-form' onSubmit={e => sendMessage(e)}>
-                  <abbr title='Upload image or video'><img src={plusIcon} className='plus-icon'/></abbr>
+                    <abbr title='Upload image or video'><img src={plusIcon} className='plus-icon'/></abbr>
+                    {/* Seperator div between add file button and message input */}
+                      <div className="message-input-separator"></div>
                     <input className="message-input" type="text" placeholder='Type a message' maxLength="500" value={newMessage} onChange={e => setNewMessage(e.target.value)}/>
                     <button className="send-button"><img src={sendButton} alt="send icon"/></button>
                   </form>

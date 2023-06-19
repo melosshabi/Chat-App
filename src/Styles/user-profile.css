@@ -38,7 +38,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
+}
+.profile-user-icon{
+    width: 35px;
 }
 /* User's information (the right side of the screen) */
 .profile-details{
