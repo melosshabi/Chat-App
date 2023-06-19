@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import {auth, storage, db} from '../firebase-config'
-import { collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore'
+import { collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 // Functions
 import { toggleMobileSidebar } from './Sidebar'
 // Images
@@ -15,6 +15,9 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
   
     const [roomMessages, setRoomMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
+    const [messageToDelete, setMessageToDelete] = useState()
+    const [deletetionInProgress, setDeletionInProgress] = useState(false)
+    const messageToEdit = useRef()
     const lastMessageRef = useRef(null);
 
     useEffect(() =>{
@@ -103,6 +106,46 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
         const messagesCollection = collection(db, "messages");
         await addDoc(messagesCollection, {message:newMessage, senderID:auth.currentUser.uid, senderName:auth.currentUser.displayName, senderProfilePicture:loggedUserProfilePicture,roomSentTo:selectedRoom, timeSent:serverTimestamp()})
       }  
+
+      function toggleMoreOptions(e, index) {
+        e.preventDefault()
+        document.querySelectorAll('.logged-user-message-options')[index].classList.toggle('active-more-options')
+        return false
+      }
+
+      function toggleDeleteModal(message){
+        document.querySelector('.confirm-delete-modal').classList.toggle('active-delete-modal')
+        setMessageToDelete(message)
+      }
+
+      async function deleteMessage(){
+        setDeletionInProgress(true)
+        const messageRef = doc(db, 'messages', messageToDelete.id)
+        await deleteDoc(messageRef)
+        .then(() => {
+          toggleDeleteModal({})
+          setDeletionInProgress(false)
+        })
+      }
+
+      // Makes the p tag editable and shows the save button
+      function editMessage(index, message){
+        // This line makes the edit and delete buttons disappear
+        document.querySelectorAll('.logged-user-message-options')[index].classList.remove('active-more-options')
+        document.querySelectorAll('.logged-user-message')[index].querySelector('.message').contentEditable = true
+        document.querySelectorAll('.save-edit-message')[index].classList.add('active-edit-message')
+        messageToEdit.current = message
+      }
+
+      // Saves the edited message to the database
+      async function saveEdit(index){
+        // Make the p tag uneditable
+        const p = document.querySelectorAll('.logged-user-message')[index].querySelector('.message')
+        p.contentEditable = false
+        document.querySelectorAll('.save-edit-message')[index].classList.remove('active-edit-message')
+        const messageRef = doc(db, 'messages', messageToEdit.current.id)
+        await updateDoc(messageRef, {message:p.innerText})
+      }
   return (
     <div className="chats-wrapper">
                <div className="messages-wrapper">
@@ -111,12 +154,17 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
                   <h2>Room {selectedRoom}</h2></div>
                 
                 <div className="messages">
-                  {roomMessages.map(messageFile =>{
+                  {roomMessages.map((messageFile, index) =>{
                       if(messageFile.senderID === auth.currentUser.uid){
                         return (
-                          <div key={nanoid()} className="logged-user-message">
-                            <img className="logged-user-pfp" src={loggedUserProfilePicture} alt="pfp"/><p>{messageFile.message}</p>
+                          <div key={nanoid()} className="logged-user-message" onContextMenu={e => toggleMoreOptions(e, index)} onClick={() => document.querySelectorAll('.logged-user-message-options')[index].classList.remove('active-more-options')}>
+                            <img className="logged-user-pfp" src={loggedUserProfilePicture} alt="pfp"/><p className='message'>{messageFile.message}</p>
                             <span className='logged-usr-time-msg-sent'>{messageFile.dateSent} {messageFile.timeSent}</span>
+                            <div className="logged-user-message-options">
+                              <button className="logged-user-options-btns" onClick={() => editMessage(index, messageFile)}><span>Edit</span></button>
+                              <button className="logged-user-options-btns" onClick={() => toggleDeleteModal(messageFile)}><span>Delete</span></button>
+                            </div>
+                            <button className='save-edit-message' onClick={() => saveEdit(index)}>Save</button>
                           </div>
                         )
                       }else if(messageFile.senderID !== auth.currentUser.uid){
@@ -142,6 +190,23 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
                     <button className="send-button"><img src={sendButton} alt="send icon"/></button>
                   </form>
                 </div>
+                </div>
+
+                {/* Confirm message deletion modal */}
+                <div className="confirm-delete-modal">
+                  <div className="title-message-wrapper">
+                    <h2>Are you sure you want to delete this message?</h2>
+                  
+                  <div className="logged-user-message message-to-delete">
+                    {messageToDelete && <p><img src={loggedUserProfilePicture} style={{width:'60px', borderRadius:'50%', display:'inline-block', verticalAlign:'middle'}}/>{messageToDelete.message}</p>}
+                    {messageToDelete && <span className='logged-usr-time-msg-sent message-to-delete-date'>{messageToDelete.dateSent} {messageToDelete.timeSent}</span>}
+                  </div>
+
+                  <div className="modal-btns-wrapper">
+                    <button className='modal-btns' onClick={() => document.querySelector('.confirm-delete-modal').classList.remove('active-delete-modal')}>No</button> <button className='modal-btns delete-btn' onClick={deleteMessage} disabled={deletetionInProgress}>{!deletetionInProgress ? "Yes" : "Deleting..."}</button>
+                  </div>
+
+                  </div>
                 </div>
             </div>
   )
