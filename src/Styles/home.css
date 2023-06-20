@@ -74,11 +74,13 @@
     background: none;
     border: none;
     cursor: pointer;
+    padding:5px;
+    border-radius: 5px;
 }
 .logout-img{
     width: 20px;
 }
-.logout-img:hover{
+.logout-btn:hover{
     background-color: rgb(46, 51, 58);
 }
 .more-options-div{
