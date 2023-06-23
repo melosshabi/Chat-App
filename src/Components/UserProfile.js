@@ -50,8 +50,14 @@ export default function UserProfile() {
     let updatePictureBtn = document.getElementsByClassName('update-profile-picture-btn')[0];
     updatePictureBtn.disabled = false;
     updatePictureBtn.addEventListener('click', async () =>{
+      const metadata = {
+        customMetadata:{
+          "uploaderName":auth.currentUser.displayName,
+          "uploaderId":auth.currentUser.uid
+        }
+      }
       const storageRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
-      await uploadBytes(storageRef, newPicture)
+      await uploadBytes(storageRef, newPicture, metadata)
       const newPicUrl = await getDownloadURL(storageRef)
       await updateProfile(auth.currentUser, {photoURL:newPicUrl})
       .then(() => window.location.reload())
