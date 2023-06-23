@@ -1,20 +1,33 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import '../Styles/sign-up.css'
 import {auth, googleProvider, storage} from '../firebase-config'
 import { createUserWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth'
 import Cookies from 'universal-cookie'
-import { uploadBytes, ref } from 'firebase/storage'
+import { uploadBytes, ref, getDownloadURL } from 'firebase/storage'
 
 const cookies = new Cookies();
 export default function SignUp() {
     
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        auth.onAuthStateChanged(() => {
+            if(auth.currentUser){
+                localStorage.setItem('name', registerName)
+                localStorage.setItem('email', registerEmail)
+                cookies.set("auth-token", auth.currentUser.refreshToken)
+                navigate('/')
+            } 
+        })
+    }, [])
+
     const [registerName, setRegisterName] = useState('')
     const [registerEmail, setRegisterEmail] = useState('');
     const [registerPassword, setRegisterPassword] = useState('');
     const [registerProfilePicture, setRegisterProfilePicture] = useState();
     const [error, setError] = useState('');
-    const navigate = useNavigate();
+    
 
     //Function to sign up with email and password
     async function signUp(e){
@@ -27,12 +40,11 @@ export default function SignUp() {
                     cookies.set("auth-token", res.user.refreshToken)
                 });
 
-                await updateProfile(auth.currentUser, {displayName:registerName})
-
                 const storageRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
                 await uploadBytes(storageRef, registerProfilePicture)
+                const pictureUrl = await getDownloadURL(storageRef)
+                await updateProfile(auth.currentUser, {displayName:registerName, photoURL:pictureUrl})
                 .then(() => navigate('/'))
-                
             }catch(err){
                 if(err.code === "auth/invalid-email"){
                     setError('Invalid Email!')

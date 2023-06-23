@@ -20,14 +20,16 @@ export default function UserProfile() {
 
   const navigate = useNavigate();
 
-  useEffect(()=>{
-  if(!cookies.get("auth-token")){
-    navigate('/signIn')
-  }}, [])
+  const [profilePicture, setProfilePicture] = useState();
+  
+  useEffect(()=>
+    auth.onAuthStateChanged(() => {
+      if(auth.currentUser) setProfilePicture(auth.currentUser.photoURL)
+      else navigate('/signIn')
+    }), [])
 
   const [name, setName] = useState(localStorage.getItem('name'))
   const [email, setEmail] = useState(localStorage.getItem('email'))
-  const [profilePicture, setProfilePicture] = useState();
 
   const handleNameChange = e =>{
     let newName = e.target.value;
@@ -37,12 +39,6 @@ export default function UserProfile() {
     let newEmail = e.target.value;
     setEmail(newEmail)
   }
-  // This function fetches the profile picture
-  auth.onAuthStateChanged(async () => {
-      const profilePictureRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
-      await getDownloadURL(profilePictureRef)
-      .then(res => setProfilePicture(res))
-    })
 
   // This function expands the sidebar for mobile devices
   function expandSidebar(){
@@ -56,6 +52,8 @@ export default function UserProfile() {
     updatePictureBtn.addEventListener('click', async () =>{
       const storageRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
       await uploadBytes(storageRef, newPicture)
+      const newPicUrl = await getDownloadURL(storageRef)
+      await updateProfile(auth.currentUser, {photoURL:newPicUrl})
       .then(() => window.location.reload())
     })
   }

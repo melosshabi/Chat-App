@@ -3,13 +3,10 @@ import { useNavigate } from 'react-router-dom'
 // Components
 import Chats from './Chats'
 import Sidebar from './Sidebar'
-import {auth, storage} from '../firebase-config'
-import {getDownloadURL, ref} from 'firebase/storage'
-import Cookies from 'universal-cookie'
+import {auth} from '../firebase-config'
 import { nanoid } from 'nanoid'
 // CSS
 import '../Styles/home.css'
-const cookies = new Cookies();
 
 export default function Home() {
 
@@ -17,12 +14,15 @@ export default function Home() {
 
   const [selectedRoom, setSelectedRoom] = useState(1)
   const [isRoomSelected, setIsRoomSelected] = useState(false)
-  const [loggedUserProfilePicture, setLoggedUserProfilePicture] = useState('')
+  const [profilePicture, setProfilePicture] = useState('')
 
   useEffect(()=>{
-    if(!cookies.get("auth-token")){
-      navigate("/signIn")
-    }
+
+    auth.onAuthStateChanged(()=>{
+      if(!auth.currentUser) navigate('/signIn')
+      else setProfilePicture(auth.currentUser.photoURL)
+    })
+
     const sessionSelectedRoom = sessionStorage.getItem('selectedRoom')
     const sessionIsRoomSelected = sessionStorage.getItem('isRoomSelected')
     if(sessionSelectedRoom && sessionIsRoomSelected){
@@ -30,15 +30,7 @@ export default function Home() {
       setSelectedRoom(sessionSelectedRoom)
     }
 
-    auth.onAuthStateChanged(()=>{
-      (async function fetchLoggedUserProfilePicture(){
-        const profilePictureRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
-        await getDownloadURL(profilePictureRef)
-        .then(url =>{
-          setLoggedUserProfilePicture(url)
-        })
-      })();
-    })    
+   
   }, [])
   
    function enterRoom(e){
@@ -50,7 +42,7 @@ export default function Home() {
   return (
     <div className='home-container'>
      
-      <Sidebar isRoomSelected={isRoomSelected} setIsRoomSelected={setIsRoomSelected} setSelectedRoom={setSelectedRoom} loggedUserProfilePicture={loggedUserProfilePicture}/>
+      <Sidebar isRoomSelected={isRoomSelected} setIsRoomSelected={setIsRoomSelected} setSelectedRoom={setSelectedRoom} profilePicture={profilePicture}/>
       {/* Room Selection form */}
       {!isRoomSelected && <div className="room-selection-wrapper">
         <div className="room-selection-form-wrapper">
@@ -63,7 +55,7 @@ export default function Home() {
           </div>        
           </div>}
           
-          {isRoomSelected && <Chats key={nanoid()} loggedUserProfilePicture={loggedUserProfilePicture} selectedRoom={selectedRoom}/>}
+          {isRoomSelected && <Chats key={nanoid()} profilePicture={profilePicture} selectedRoom={selectedRoom}/>}
       </div>
   )
 }

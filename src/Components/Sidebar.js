@@ -29,7 +29,7 @@ export function toggleMobileSidebar(){
    }
  }
 
-export default function Sidebar({isRoomSelected, setIsRoomSelected, setSelectedRoom, loggedUserProfilePicture}) {
+export default function Sidebar({isRoomSelected, setIsRoomSelected, setSelectedRoom, profilePicture}) {
 
     const navigate = useNavigate()
 
@@ -63,7 +63,7 @@ export default function Sidebar({isRoomSelected, setIsRoomSelected, setSelectedR
      {isRoomSelected && <button className='leave-room-btn' onClick={() => leaveRoom()}><img src={logoutIcon} alt="Log Out"/>Leave Room</button>}
        <div className="user-info">
          <div className="user-name-pfp"> 
-         <Link to="/userProfile"><img className="user-icon" src={loggedUserProfilePicture} alt="User Icon"/></Link>
+         <Link to="/userProfile"><img className="user-icon" src={profilePicture} alt="User Icon"/></Link>
          <p>{localStorage.getItem('name')}</p>
          <div className="sign-out-div">
          <button className='logout-btn' onClick={logOut}><img className="logout-img" src={logoutIcon} alt="log out icon"/></button>
@@ -88,7 +88,7 @@ export default function Sidebar({isRoomSelected, setIsRoomSelected, setSelectedR
          <button className="mobile-sidebar-btn" onClick={() => toggleMobileSidebar()}><img src={sidebarIcon} alt="Hamburger Menu"/></button>
 
          <div className="user-info-mobile">
-         <Link to="/userProfile"><img className="user-icon-mobile" src={loggedUserProfilePicture} alt="User Icon"/></Link>
+         <Link to="/userProfile"><img className="user-icon-mobile" src={profilePicture} alt="User Icon"/></Link>
          <p>{localStorage.getItem('name')}</p>
          <div className="sign-out-div-mobile">
          <button className='logout-btn-mobile' onClick={logOut}><img className="logout-img-mobile" src={logoutIcon} alt="log out icon"/></button>

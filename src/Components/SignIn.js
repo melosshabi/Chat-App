@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import '../Styles/sign-in.css'
 import {auth, googleProvider} from '../firebase-config'
@@ -7,10 +7,23 @@ import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 export default function SignIn() {
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        auth.onAuthStateChanged(() => {
+            if(auth.currentUser){
+                localStorage.setItem('name', auth.currentUser.displayName)
+                localStorage.setItem('email', auth.currentUser.email)
+                cookies.set("auth-token", auth.currentUser.refreshToken)
+                navigate('/')
+            } 
+        })
+    }, [])
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
+    
 
     //Function to sign in with email and password
     async function signIn(e){

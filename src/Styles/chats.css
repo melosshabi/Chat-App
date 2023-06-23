@@ -10,7 +10,6 @@
     color:White;
 }
 .room-title-wrapper{
-    /* padding-top: 1%; */
     padding-bottom:1%;
     font-size: 2em;
     height: 5%;
@@ -40,10 +39,10 @@
     padding-bottom:15px;
     border-radius: 5px;
     background-color: #39434e;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
     position: relative;
+}
+.others-message{
+    display: flex;
 }
 .others-message p, .logged-user-message p{
     margin:20px 10px;
@@ -329,8 +328,11 @@
     .message-form{
         margin-top: 10px;
     }
-    .logged-user-message{
+    .logged-user-message-wrapper{
         min-width: 13%;
+    }
+    .fullscreen-image{
+        width: 80%;
     }
 }
 /* Nest Hub Max */
@@ -362,8 +364,12 @@
     .plus-icon{
         width: 40px;
     }
-    .logged-user-message{
+    .logged-user-message-wrapper{
         min-width: 18%;
+    }
+    .files-preview{
+        height: 15dvh;
+        top:-94px;
     }
 }
 /* Surface Pro 7 */
@@ -377,14 +383,25 @@
     .messages{
         height: 85vh;
     }
-    .logged-user-message{
+    .logged-user-message-wrapper{
         min-width: 15vw;
+    }
+    .files-preview{
+        top:-10.5dvh;
     }
 }
 /* iPad Air */
 @media only screen and (max-width:820px) and (max-height:1180px){
     .messages{
         height: 84.7vh;
+    }
+    .save-edit-message{
+        width: 80px;
+        background-color: #39434e;
+        padding:5px;
+        border-radius: 5px;
+        font-size: 1.5em;
+        bottom:-45px
     }
 }
 /* iPad Mini */
@@ -410,7 +427,7 @@
     .messages{
         height: 82vh;
     }
-    .logged-user-message{
+    .logged-user-message-wrapper{
         min-width: 25%;
         align-items: flex-start;
     }
@@ -420,6 +437,12 @@
     .message-to-delete{
         min-width: 45%;
         margin:10% 0;
+    }
+    .files-preview{
+        height: 15dvh;
+        width: 80dvw;
+        top:-16dvh;
+        left:5dvw;
     }
 }
 /* iPhone XR */
@@ -436,10 +459,10 @@
     .messages{
         height: 83.7vh;
     }
-    .logged-user-message{
+    .logged-user-message-wrapper{
         min-width: 32%;
     }
-    .logged-user-message, .others-message{
+    .logged-user-message-wrapper, .others-message-wrapper{
         max-width: 80%;
     }
     .title-message-wrapper{
@@ -451,10 +474,13 @@
     .save-edit-message{
         left: 65%;
     }
+    .files-preview{
+        width: 80dvw;
+    }
 }
 /* Galaxy S21FE */
 @media only screen and (max-width:360px) and (max-height:800px){
-    .logged-user-message{
+    .logged-user-message-wrapper{
         min-width: 40%;
     }
     .message-form-wrapper{
@@ -464,15 +490,16 @@
         width: 100dvw;
         padding:3px 0;
     }
-    .message-input{
-        width: 100dvw;
-    }
     .message-to-delete{
         margin:15% 0;
         min-width: 65%;
     }
     .save-edit-message{
         left:70%
+    }
+    .logged-user-message-options{
+        width: 75px;
+        left:-80px
     }
 }
 /* Galaxy S7 */

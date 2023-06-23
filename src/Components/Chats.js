@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 // Firebase
 import {auth, storage, db} from '../firebase-config'
 import { collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp, deleteDoc, doc, updateDoc } from 'firebase/firestore'
-import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
+import {deleteObject, getDownloadURL, ref, uploadBytes} from 'firebase/storage'
 // Functions
 import { toggleMobileSidebar } from './Sidebar'
 // Images
@@ -15,11 +15,11 @@ import { nanoid } from 'nanoid'
 // CSS
 import '../Styles/chats.css'
 
-export default function Chats({loggedUserProfilePicture, selectedRoom}) {
-  
+export default function Chats({profilePicture, selectedRoom}) {
+
+    
     const [roomMessages, setRoomMessages] = useState([]);
-    // const [newMessage, setNewMessage] = useState()
-    const newMessage = useRef()
+    const [newMessage, setNewMessage] = useState()
     const [messageToDelete, setMessageToDelete] = useState()
     const [deletetionInProgress, setDeletionInProgress] = useState(false)
     const messageToEdit = useRef('')
@@ -31,7 +31,7 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
         const queryMessages = query(messagesRef, where("roomSentTo", "==", selectedRoom), orderBy("timeSent"))
         onSnapshot(queryMessages, snapshot =>{
           let messages = [];
-          snapshot.forEach(async doc =>{
+          snapshot.forEach(doc => {
             //Date Variables
             let date = doc.data().timeSent.toDate();
             let day = date.getDate();
@@ -97,31 +97,11 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
       }
         fetchMessages()
         return () => fetchMessages()
-
     }, [])
       
       useEffect(() =>{
         lastMessageRef.current?.scrollIntoView();
       }, [roomMessages])
-
-      // Makes the p tag editable and shows the save button
-      function editMessage(index, message){
-        // This line makes the edit and delete buttons disappear
-        document.querySelectorAll('.logged-user-message-options')[index].classList.remove('active-more-options')
-        document.querySelectorAll('.logged-user-message')[index].querySelector('.message').contentEditable = true
-        document.querySelectorAll('.save-edit-message')[index].classList.add('active-edit-message')
-        messageToEdit.current = message
-      }
-
-      // Saves the edited message to the database
-      async function saveEdit(index){
-        // Make the p tag uneditable
-        const p = document.querySelectorAll('.logged-user-message')[index].querySelector('.message')
-        p.contentEditable = false
-        document.querySelectorAll('.save-edit-message')[index].classList.remove('active-edit-message')
-        const messageRef = doc(db, 'messages', messageToEdit.current.id)
-        await updateDoc(messageRef, {message:p.innerText})
-      }
 
       const [selectedImage, setSelectedImage] = useState(null)
       const [selectedImageSrc, setSelectedImageSrc] = useState(null)
@@ -166,43 +146,10 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
         document.querySelector('.files-preview').classList.add('active-file-preview')
       }
 
-      // The function which sends the message to the db
-      async function sendMessage(e){
-        e.preventDefault()
-        if(!newMessage.current) return
-        let imageUrl = null
-        let videoUrl = null
-
-        if(selectedImage){
-          const metadata = {
-            uploaderName:auth.currentUser.displayName,
-            uploaderId:auth.currentUser.uid
-          }
-          const imageRef = ref(storage, `MessagesImages/${nanoid()}`, metadata)
-          await uploadBytes(imageRef, selectedImage)
-          await getDownloadURL(imageRef).then(res => imageUrl = res)
-        }
-
-        if(selectedVideo){
-          const metadata = {
-            uploaderName:auth.currentUser.displayName,
-            uploaderId:auth.currentUser.uid
-          }
-          const videoRef = ref(storage, `MessagesVideos/${nanoid()}`, metadata)
-          await uploadBytes(videoRef, selectedVideo)
-          await getDownloadURL(videoRef).then(res => videoUrl = res)
-        }
-
-        const messagesCollection = collection(db, "messages")
-        console.log(newMessage.current)
-        await addDoc(messagesCollection, {
-          message:newMessage.current, senderID:auth.currentUser.uid, senderName:auth.currentUser.displayName, 
-          senderProfilePicture:loggedUserProfilePicture, roomSentTo:selectedRoom,
-          imageUrl, videoUrl,
-          timeSent:serverTimestamp()
-        })
-        newMessage.current = ""
-      }  
+      function toggleImageFullscreen(url){
+        setImageToViewInFullscreen(url)
+        document.querySelector('.fullscreen-image-wrapper').classList.toggle('active-fullscreen-image-wrapper')
+      }
 
       // The function that toggles the small div which has the edit and delete buttons
       function toggleMoreOptions(e, index) {
@@ -211,9 +158,24 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
         return false
       }
 
-      function toggleImageFullscreen(url){
-        setImageToViewInFullscreen(url)
-        document.querySelector('.fullscreen-image-wrapper').classList.toggle('active-fullscreen-image-wrapper')
+      // Makes the p tag editable and shows the save button
+      function editMessage(index, message){
+        // This line makes the edit and delete buttons disappear
+        document.querySelectorAll('.message-wrapper')[index].querySelector('.logged-user-message-options').classList.remove('active-more-options')
+        document.querySelectorAll('.message-wrapper')[index].querySelector('.message').contentEditable = true
+        document.querySelectorAll('.message-wrapper')[index].querySelector('.save-edit-message').classList.add('active-edit-message')
+        messageToEdit.current = message
+      }
+
+      // Saves the edited message to the database
+      async function saveEdit(index){
+        // Make the p tag uneditable
+        const messageWrapper = document.querySelectorAll('.message-wrapper')[index];
+        const p = messageWrapper.querySelector('.message')
+        p.contentEditable = false
+        messageWrapper.querySelector('.save-edit-message').classList.remove('active-edit-message')
+        const messageRef = doc(db, 'messages', messageToEdit.current.id)
+        await updateDoc(messageRef, {message:p.innerText})
       }
 
       function toggleDeleteModal(message){
@@ -223,6 +185,14 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
 
       async function deleteMessage(){
         setDeletionInProgress(true)
+        if(messageToDelete.imageName){
+          const imageRef = ref(storage, `MessagesImages/${messageToDelete.imageName}`)
+          await deleteObject(imageRef)
+        }
+        if(messageToDelete.videoName){
+          const videoRef = ref(storage, `MessagesVideos/${messageToDelete.videoName}`)
+          await deleteObject(videoRef)
+        }
         const messageRef = doc(db, 'messages', messageToDelete.id)
         await deleteDoc(messageRef)
         .then(() => {
@@ -230,6 +200,53 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
           setDeletionInProgress(false)
         })
       }
+
+       // The function which sends the message to the db
+       async function sendMessage(e){
+        e.preventDefault()
+        if(!newMessage) return
+        setNewMessage('')
+        document.querySelector('.files-preview').classList.remove('active-file-preview')
+        let imageName = null
+        let imageUrl = null
+        let videoName = null
+        let videoUrl = null
+
+        if(selectedImage){
+          const metadata = {
+            uploaderName:auth.currentUser.displayName,
+            uploaderId:auth.currentUser.uid
+          }
+          imageName = nanoid()
+          const imageRef = ref(storage, `MessagesImages/${imageName}`, metadata)
+          await uploadBytes(imageRef, selectedImage)
+          await getDownloadURL(imageRef).then(res => imageUrl = res)
+        }
+
+        if(selectedVideo){
+          const metadata = {
+            uploaderName:auth.currentUser.displayName,
+            uploaderId:auth.currentUser.uid
+          }
+          videoName = nanoid()
+          const videoRef = ref(storage, `MessagesVideos/${videoName}`, metadata)
+          await uploadBytes(videoRef, selectedVideo)
+          await getDownloadURL(videoRef).then(res => videoUrl = res)
+        }
+        
+        setSelectedImage(null)
+        setSelectedImageSrc(null)
+        setSelectedVideo(null)
+        setSelectedVideoSrc(null)
+
+        const messagesCollection = collection(db, "messages")
+        await addDoc(messagesCollection, {
+          message:newMessage, senderID:auth.currentUser.uid, senderName:auth.currentUser.displayName, 
+          senderProfilePicture:auth.currentUser.photoURL, roomSentTo:selectedRoom,
+          imageName, imageUrl, videoName, videoUrl,
+          timeSent:serverTimestamp()
+        })
+      }  
 
   return (
     <div className="chats-wrapper">
@@ -243,7 +260,7 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
                       if(messageFile.senderID === auth.currentUser.uid){
                         return (
                           <div key={nanoid()} className="logged-user-message-wrapper message-wrapper" onContextMenu={e => toggleMoreOptions(e, index)} onClick={() => document.querySelectorAll('.message-wrapper')[index].querySelector('.logged-user-message-options').classList.remove('active-more-options')}>
-                            <div className='logged-user-message'><img className="logged-user-pfp" src={loggedUserProfilePicture} alt="pfp"/><p className='message'>{messageFile.message}</p></div>
+                            <div className='logged-user-message'><img className="logged-user-pfp" src={profilePicture} alt="pfp"/><p className='message'>{messageFile.message}</p></div>
                               {/* Image */}
                               {messageFile.imageUrl && <div className='message-picture-wrapper'><img src={messageFile.imageUrl} className='message-picture' style={{cursor:'pointer'}} onClick={() => toggleImageFullscreen(messageFile.imageUrl)}/></div>}
                               {/* Video */}
@@ -264,8 +281,10 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
                        
                         return (
                           <div key={nanoid()} className="others-message-wrapper message-wrapper">
-                            <img className='sender-pfp' src={messageFile.senderProfilePicture} alt="pfp"/>
-                            <span style={{fontWeight:"bold", marginTop:"20px"}}>{messageFile.senderName}:</span><p>{messageFile.message}</p>
+                            <div className="others-message">
+                              <img className='sender-pfp' src={messageFile.senderProfilePicture} alt="pfp"/>
+                              <span style={{fontWeight:"bold", marginTop:"20px"}}>{messageFile.senderName}:</span><p>{messageFile.message}</p>
+                            </div>
                             {/* Image */}
                             {messageFile.imageUrl && <div className='message-picture-wrapper'><img src={messageFile.imageUrl} className='message-picture' style={{cursor:'pointer'}} onClick={() => toggleImageFullscreen(messageFile.imageUrl)}/></div>}
                               {/* Video */}
@@ -294,7 +313,7 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
                     <abbr title='Upload image or video' onClick={() => selectFile()}><img src={plusIcon} className='plus-icon'/></abbr>
                     {/* Seperator div between add file button and message input */}
                       <div className="message-input-separator"></div>
-                    <input className="message-input" type="text" placeholder='Type a message' maxLength="500" value={newMessage.current} onChange={e => newMessage.current = e.target.value}/>
+                    <input className="message-input" type="text" placeholder='Type a message' maxLength="500" value={newMessage} onChange={e => setNewMessage(e.target.value)}/>
                     <button className="send-button"><img src={sendButton} alt="send icon"/></button>
                     <input className='files-input' onChange={e => handleFileChange(e.target.files[0])} type="file" accept="image/png, image/jpeg, video/mp4"/>
                   </form>
@@ -307,7 +326,7 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
                     <h2>Are you sure you want to delete this message?</h2>
                   
                   <div className="logged-user-message message-to-delete">
-                    {messageToDelete && <p><img src={loggedUserProfilePicture} style={{width:'60px', borderRadius:'50%', display:'inline-block', verticalAlign:'middle'}}/>{messageToDelete.message}</p>}
+                    {messageToDelete && <p><img src={profilePicture} style={{width:'60px', borderRadius:'50%', display:'inline-block', verticalAlign:'middle'}}/>{messageToDelete.message}</p>}
                     {messageToDelete && <span className='logged-usr-time-msg-sent message-to-delete-date'>{messageToDelete.dateSent} {messageToDelete.timeSent}</span>}
                   </div>
 
