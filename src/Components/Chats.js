@@ -214,23 +214,27 @@ export default function Chats({profilePicture, selectedRoom}) {
 
         if(selectedImage){
           const metadata = {
-            uploaderName:auth.currentUser.displayName,
-            uploaderId:auth.currentUser.uid
+            customMetadata:{
+              "uploaderName":auth.currentUser.displayName,
+              "uploaderId":auth.currentUser.uid
+            }
           }
           imageName = nanoid()
-          const imageRef = ref(storage, `MessagesImages/${imageName}`, metadata)
-          await uploadBytes(imageRef, selectedImage)
+          const imageRef = ref(storage, `MessagesImages/${imageName}`)
+          await uploadBytes(imageRef, selectedImage, metadata)
           await getDownloadURL(imageRef).then(res => imageUrl = res)
         }
 
         if(selectedVideo){
           const metadata = {
-            uploaderName:auth.currentUser.displayName,
-            uploaderId:auth.currentUser.uid
+            customMetadata:{
+              "uploaderName":auth.currentUser.displayName,
+              "uploaderId":auth.currentUser.uid
+            }
           }
           videoName = nanoid()
-          const videoRef = ref(storage, `MessagesVideos/${videoName}`, metadata)
-          await uploadBytes(videoRef, selectedVideo)
+          const videoRef = ref(storage, `MessagesVideos/${videoName}`)
+          await uploadBytes(videoRef, selectedVideo, metadata)
           await getDownloadURL(videoRef).then(res => videoUrl = res)
         }
         
