@@ -30,7 +30,7 @@
     flex-direction: column;
 }
 /* Others messages styles */
-.others-message{
+.others-message-wrapper{
     height: fit-content;
     width: fit-content;
     min-width: 8%;
@@ -58,7 +58,7 @@
     font-style:italic;
 }
 /* Logged in User's Styles */
-.logged-user-message{
+.logged-user-message-wrapper{
     height: fit-content;
     width: fit-content;
     min-width: 8%;
@@ -68,12 +68,16 @@
     border-radius: 5px;
     background-color: #39434e;
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     align-self: flex-end;
     position: relative;
     word-break: break-word;
+}
+.logged-user-message{
+    display: flex;
+    flex-direction: row-reverse;
 }
 /* This class is the p tag which has the message */
 .message{
@@ -81,6 +85,10 @@
 }
 .message:focus{
     outline:1px solid white;
+}
+.message-picture, .message-video{
+    width: 250px;
+    margin:0 10px 20px 10px;
 }
 .logged-user-pfp, .sender-pfp{
     width: 40px;
@@ -137,6 +145,39 @@
 .save-edit-message:hover{
     text-decoration: underline;
 }
+/* Fullscreen image styling */
+.fullscreen-image-wrapper{
+    width: 100dvw;
+    height: 100dvh;
+    position: absolute;
+    left:0;
+    top:0;
+    z-index: 5;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, .8);
+}
+.active-fullscreen-image-wrapper{
+    display: flex;
+}
+.fullscreen-image{
+    width: 50%;
+}
+.close-fullscreen-image-btn{
+    background: none;
+    border: none;
+    position: absolute;
+    top:20px;
+    right:20px;
+    padding:10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 250ms;
+}
+.close-fullscreen-image-btn:hover{
+    background-color: rgba(255, 255, 255, .2);
+}
 /* Styles of the Message input and its wrapper */
 .message-form-wrapper{
     height: 6%;
@@ -152,6 +193,7 @@
     flex-direction: row;
     background: rgb(48, 56, 65);
     border-radius: 5px;
+    position: relative;
 }
 .plus-icon{
     cursor: pointer;
@@ -195,6 +237,22 @@
 }
 .send-button:hover{
     background: rgba(255, 255, 255, .2);
+}
+.files-input{
+    display: none;
+}
+.files-preview{
+    height: 10dvh;
+    width: 50%;
+    position: absolute;
+    top:-85px;
+    background-color: rgb(48, 56, 65);
+    border:1px solid white;
+    display: none;
+}
+.active-file-preview{
+    display: flex;
+    justify-content: space-between;
 }
 /* Confirm message deletion modal*/
 .confirm-delete-modal{

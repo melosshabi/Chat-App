@@ -1,23 +1,28 @@
 import React, {useState, useEffect, useRef} from 'react'
+// Firebase
 import {auth, storage, db} from '../firebase-config'
 import { collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp, deleteDoc, doc, updateDoc } from 'firebase/firestore'
+import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
 // Functions
 import { toggleMobileSidebar } from './Sidebar'
 // Images
 import sendButton from '../SVGs/send-button.png'
 import plusIcon from '../SVGs/plus.png'
 import sidebarIcon from '../SVGs/sidebar-icon.png'
+import xIcon from '../SVGs/close.png'
 // ID generator
 import { nanoid } from 'nanoid'
 // CSS
 import '../Styles/chats.css'
+
 export default function Chats({loggedUserProfilePicture, selectedRoom}) {
   
     const [roomMessages, setRoomMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState('');
+    // const [newMessage, setNewMessage] = useState()
+    const newMessage = useRef()
     const [messageToDelete, setMessageToDelete] = useState()
     const [deletetionInProgress, setDeletionInProgress] = useState(false)
-    const messageToEdit = useRef()
+    const messageToEdit = useRef('')
     const lastMessageRef = useRef(null);
 
     useEffect(() =>{
@@ -99,35 +104,6 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
         lastMessageRef.current?.scrollIntoView();
       }, [roomMessages])
 
-      async function sendMessage(e){
-        e.preventDefault();
-        if(!newMessage) return;
-        setNewMessage("")
-        const messagesCollection = collection(db, "messages");
-        await addDoc(messagesCollection, {message:newMessage, senderID:auth.currentUser.uid, senderName:auth.currentUser.displayName, senderProfilePicture:loggedUserProfilePicture,roomSentTo:selectedRoom, timeSent:serverTimestamp()})
-      }  
-
-      function toggleMoreOptions(e, index) {
-        e.preventDefault()
-        document.querySelectorAll('.logged-user-message-options')[index].classList.toggle('active-more-options')
-        return false
-      }
-
-      function toggleDeleteModal(message){
-        document.querySelector('.confirm-delete-modal').classList.toggle('active-delete-modal')
-        setMessageToDelete(message)
-      }
-
-      async function deleteMessage(){
-        setDeletionInProgress(true)
-        const messageRef = doc(db, 'messages', messageToDelete.id)
-        await deleteDoc(messageRef)
-        .then(() => {
-          toggleDeleteModal({})
-          setDeletionInProgress(false)
-        })
-      }
-
       // Makes the p tag editable and shows the save button
       function editMessage(index, message){
         // This line makes the edit and delete buttons disappear
@@ -146,6 +122,115 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
         const messageRef = doc(db, 'messages', messageToEdit.current.id)
         await updateDoc(messageRef, {message:p.innerText})
       }
+
+      const [selectedImage, setSelectedImage] = useState(null)
+      const [selectedImageSrc, setSelectedImageSrc] = useState(null)
+      const [selectedVideo, setSelectedVideo] = useState(null)
+      const [selectedVideoSrc, setSelectedVideoSrc] = useState(null)
+      const [imageToViewInFullscreen, setImageToViewInFullscreen] = useState(null)
+
+      function selectFile(){
+        document.querySelector('.files-input').click()
+      }
+
+      // This function returns the extension of a file
+      function getExtension(filename){
+        const parts = filename.split('.')
+        return parts[parts.length -1]
+      }
+
+      function handleFileChange(file){
+        const extension = getExtension(file.name)
+        switch(extension.toLowerCase()){
+          case 'jpg':
+            setSelectedImage(file)
+            const jpgReader = new FileReader()
+            jpgReader.onload = e => setSelectedImageSrc(e.target.result)
+            jpgReader.readAsDataURL(file)
+            break;
+          case 'png':
+            setSelectedImage(file);
+            const pngReader = new FileReader()
+            pngReader.onload = e => setSelectedImageSrc(e.target.result)
+            pngReader.readAsDataURL(file)
+            break;
+          case 'mp4':
+            setSelectedVideo(file)
+            const blobUrl = URL.createObjectURL(file)
+            setSelectedVideoSrc(blobUrl)
+            break;
+
+          default:
+            return ''
+        }
+        document.querySelector('.files-preview').classList.add('active-file-preview')
+      }
+
+      // The function which sends the message to the db
+      async function sendMessage(e){
+        e.preventDefault()
+        if(!newMessage.current) return
+        let imageUrl = null
+        let videoUrl = null
+
+        if(selectedImage){
+          const metadata = {
+            uploaderName:auth.currentUser.displayName,
+            uploaderId:auth.currentUser.uid
+          }
+          const imageRef = ref(storage, `MessagesImages/${nanoid()}`, metadata)
+          await uploadBytes(imageRef, selectedImage)
+          await getDownloadURL(imageRef).then(res => imageUrl = res)
+        }
+
+        if(selectedVideo){
+          const metadata = {
+            uploaderName:auth.currentUser.displayName,
+            uploaderId:auth.currentUser.uid
+          }
+          const videoRef = ref(storage, `MessagesVideos/${nanoid()}`, metadata)
+          await uploadBytes(videoRef, selectedVideo)
+          await getDownloadURL(videoRef).then(res => videoUrl = res)
+        }
+
+        const messagesCollection = collection(db, "messages")
+        console.log(newMessage.current)
+        await addDoc(messagesCollection, {
+          message:newMessage.current, senderID:auth.currentUser.uid, senderName:auth.currentUser.displayName, 
+          senderProfilePicture:loggedUserProfilePicture, roomSentTo:selectedRoom,
+          imageUrl, videoUrl,
+          timeSent:serverTimestamp()
+        })
+        newMessage.current = ""
+      }  
+
+      // The function that toggles the small div which has the edit and delete buttons
+      function toggleMoreOptions(e, index) {
+        e.preventDefault()
+        document.querySelectorAll('.message-wrapper')[index].querySelector('.logged-user-message-options').classList.toggle('active-more-options')
+        return false
+      }
+
+      function toggleImageFullscreen(url){
+        setImageToViewInFullscreen(url)
+        document.querySelector('.fullscreen-image-wrapper').classList.toggle('active-fullscreen-image-wrapper')
+      }
+
+      function toggleDeleteModal(message){
+        document.querySelector('.confirm-delete-modal').classList.toggle('active-delete-modal')
+        setMessageToDelete(message)
+      }
+
+      async function deleteMessage(){
+        setDeletionInProgress(true)
+        const messageRef = doc(db, 'messages', messageToDelete.id)
+        await deleteDoc(messageRef)
+        .then(() => {
+          toggleDeleteModal({})
+          setDeletionInProgress(false)
+        })
+      }
+
   return (
     <div className="chats-wrapper">
                <div className="messages-wrapper">
@@ -157,8 +242,16 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
                   {roomMessages.map((messageFile, index) =>{
                       if(messageFile.senderID === auth.currentUser.uid){
                         return (
-                          <div key={nanoid()} className="logged-user-message" onContextMenu={e => toggleMoreOptions(e, index)} onClick={() => document.querySelectorAll('.logged-user-message-options')[index].classList.remove('active-more-options')}>
-                            <img className="logged-user-pfp" src={loggedUserProfilePicture} alt="pfp"/><p className='message'>{messageFile.message}</p>
+                          <div key={nanoid()} className="logged-user-message-wrapper message-wrapper" onContextMenu={e => toggleMoreOptions(e, index)} onClick={() => document.querySelectorAll('.message-wrapper')[index].querySelector('.logged-user-message-options').classList.remove('active-more-options')}>
+                            <div className='logged-user-message'><img className="logged-user-pfp" src={loggedUserProfilePicture} alt="pfp"/><p className='message'>{messageFile.message}</p></div>
+                              {/* Image */}
+                              {messageFile.imageUrl && <div className='message-picture-wrapper'><img src={messageFile.imageUrl} className='message-picture' style={{cursor:'pointer'}} onClick={() => toggleImageFullscreen(messageFile.imageUrl)}/></div>}
+                              {/* Video */}
+                              {messageFile.videoUrl && <div className='message-video-wrapper'>
+                                <video className='message-video' controls>
+                                  <source src={messageFile.videoUrl}/>
+                                </video>
+                                </div>}
                             <span className='logged-usr-time-msg-sent'>{messageFile.dateSent} {messageFile.timeSent}</span>
                             <div className="logged-user-message-options">
                               <button className="logged-user-options-btns" onClick={() => editMessage(index, messageFile)}><span>Edit</span></button>
@@ -170,9 +263,17 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
                       }else if(messageFile.senderID !== auth.currentUser.uid){
                        
                         return (
-                          <div key={nanoid()} className="others-message">
+                          <div key={nanoid()} className="others-message-wrapper message-wrapper">
                             <img className='sender-pfp' src={messageFile.senderProfilePicture} alt="pfp"/>
                             <span style={{fontWeight:"bold", marginTop:"20px"}}>{messageFile.senderName}:</span><p>{messageFile.message}</p>
+                            {/* Image */}
+                            {messageFile.imageUrl && <div className='message-picture-wrapper'><img src={messageFile.imageUrl} className='message-picture' style={{cursor:'pointer'}} onClick={() => toggleImageFullscreen(messageFile.imageUrl)}/></div>}
+                              {/* Video */}
+                              {messageFile.videoUrl && <div className='message-video-wrapper'>
+                                <video className='message-video' controls>
+                                  <source src={messageFile.videoUrl}/>
+                                </video>
+                                </div>}
                             <span className="others-time-msg-sent">{messageFile.dateSent} {messageFile.timeSent}</span>
                           </div>
                         )
@@ -183,11 +284,19 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
 
                 <div className="message-form-wrapper">
                   <form className='message-form' onSubmit={e => sendMessage(e)}>
-                    <abbr title='Upload image or video'><img src={plusIcon} className='plus-icon'/></abbr>
+                    {/* This div will display above the text input so the user can see the selcted file */}
+                    <div className="files-preview">
+                      {selectedImage && <img src={selectedImageSrc}/>}
+                      {selectedVideo &&<video controls>
+                        <source src={selectedVideoSrc}/>
+                      </video>}
+                    </div>
+                    <abbr title='Upload image or video' onClick={() => selectFile()}><img src={plusIcon} className='plus-icon'/></abbr>
                     {/* Seperator div between add file button and message input */}
                       <div className="message-input-separator"></div>
-                    <input className="message-input" type="text" placeholder='Type a message' maxLength="500" value={newMessage} onChange={e => setNewMessage(e.target.value)}/>
+                    <input className="message-input" type="text" placeholder='Type a message' maxLength="500" value={newMessage.current} onChange={e => newMessage.current = e.target.value}/>
                     <button className="send-button"><img src={sendButton} alt="send icon"/></button>
+                    <input className='files-input' onChange={e => handleFileChange(e.target.files[0])} type="file" accept="image/png, image/jpeg, video/mp4"/>
                   </form>
                 </div>
                 </div>
@@ -205,8 +314,12 @@ export default function Chats({loggedUserProfilePicture, selectedRoom}) {
                   <div className="modal-btns-wrapper">
                     <button className='modal-btns' onClick={() => document.querySelector('.confirm-delete-modal').classList.remove('active-delete-modal')}>No</button> <button className='modal-btns delete-btn' onClick={deleteMessage} disabled={deletetionInProgress}>{!deletetionInProgress ? "Yes" : "Deleting..."}</button>
                   </div>
-
                   </div>
+                </div>
+                {/* Div to view image in fullscreen */}
+                <div className="fullscreen-image-wrapper">
+                  <button className="close-fullscreen-image-btn" onClick={() => toggleImageFullscreen(" ")}><img src={xIcon}/></button>
+                 <img src={imageToViewInFullscreen} className='fullscreen-image'/>
                 </div>
             </div>
   )
