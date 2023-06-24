@@ -116,7 +116,7 @@ export default function Chats({profilePicture, selectedRoom}) {
       // This function returns the extension of a file
       function getExtension(filename){
         const parts = filename.split('.')
-        return parts[parts.length -1]
+        return parts[parts.length - 1]
       }
 
       function handleFileChange(file){
@@ -127,6 +127,18 @@ export default function Chats({profilePicture, selectedRoom}) {
             const jpgReader = new FileReader()
             jpgReader.onload = e => setSelectedImageSrc(e.target.result)
             jpgReader.readAsDataURL(file)
+            break;
+          case 'jpeg':
+            setSelectedImage(file)
+            const jpegReader = new FileReader()
+            jpegReader.onload = e => setSelectedImageSrc(e.target.result)
+            jpegReader.readAsDataURL(file)
+            break;
+          case 'gif':
+            setSelectedImage(file)
+            const gifReader = new FileReader()
+            gifReader.onload = e => setSelectedImageSrc(e.target.result)
+            gifReader.readAsDataURL(file)
             break;
           case 'png':
             setSelectedImage(file);
@@ -319,7 +331,7 @@ export default function Chats({profilePicture, selectedRoom}) {
                       <div className="message-input-separator"></div>
                     <input className="message-input" type="text" placeholder='Type a message' maxLength="500" value={newMessage} onChange={e => setNewMessage(e.target.value)}/>
                     <button className="send-button"><img src={sendButton} alt="send icon"/></button>
-                    <input className='files-input' onChange={e => handleFileChange(e.target.files[0])} type="file" accept="image/png, image/jpeg, video/mp4"/>
+                    <input className='files-input' onChange={e => handleFileChange(e.target.files[0])} type="file" accept="image/png, image/jpeg, image/gif, video/mp4"/>
                   </form>
                 </div>
                 </div>
