@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 // Firebase
 import {auth, storage, db} from '../firebase-config'
 import { collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp, deleteDoc, doc, updateDoc } from 'firebase/firestore'
-import {deleteObject, getDownloadURL, ref, uploadBytes} from 'firebase/storage'
+import {deleteObject, getDownloadURL, ref, uploadBytesResumable} from 'firebase/storage'
 // Functions
 import { toggleMobileSidebar } from './Sidebar'
 // Images
@@ -17,7 +17,6 @@ import '../Styles/chats.css'
 
 export default function Chats({profilePicture, selectedRoom}) {
 
-    
     const [roomMessages, setRoomMessages] = useState([]);
     const [newMessage, setNewMessage] = useState()
     const [messageToDelete, setMessageToDelete] = useState()
@@ -103,10 +102,13 @@ export default function Chats({profilePicture, selectedRoom}) {
         lastMessageRef.current?.scrollIntoView();
       }, [roomMessages])
 
+      // This variable is used to decide whether to show the progress bars wrapper or not
       const [selectedImage, setSelectedImage] = useState(null)
       const [selectedImageSrc, setSelectedImageSrc] = useState(null)
+      const [showImageUploadProgress, setShowImageUploadProgress] = useState(false)
       const [selectedVideo, setSelectedVideo] = useState(null)
       const [selectedVideoSrc, setSelectedVideoSrc] = useState(null)
+      const [showVideoUploadProgress, setShowVideoUploadProgress] = useState(false)
       const [imageToViewInFullscreen, setImageToViewInFullscreen] = useState(null)
 
       function selectFile(){
@@ -121,33 +123,35 @@ export default function Chats({profilePicture, selectedRoom}) {
 
       function handleFileChange(file){
         const extension = getExtension(file.name)
+        const fileReader = new FileReader()
         switch(extension.toLowerCase()){
           case 'jpg':
             setSelectedImage(file)
-            const jpgReader = new FileReader()
-            jpgReader.onload = e => setSelectedImageSrc(e.target.result)
-            jpgReader.readAsDataURL(file)
+            setShowImageUploadProgress(true)
+            fileReader.onload = e => setSelectedImageSrc(e.target.result)
+            fileReader.readAsDataURL(file)
             break;
           case 'jpeg':
             setSelectedImage(file)
-            const jpegReader = new FileReader()
-            jpegReader.onload = e => setSelectedImageSrc(e.target.result)
-            jpegReader.readAsDataURL(file)
+            setShowImageUploadProgress(true)
+            fileReader.onload = e => setSelectedImageSrc(e.target.result)
+            fileReader.readAsDataURL(file)
             break;
           case 'gif':
             setSelectedImage(file)
-            const gifReader = new FileReader()
-            gifReader.onload = e => setSelectedImageSrc(e.target.result)
-            gifReader.readAsDataURL(file)
+            setShowImageUploadProgress(true)
+            fileReader.onload = e => setSelectedImageSrc(e.target.result)
+            fileReader.readAsDataURL(file)
             break;
           case 'png':
-            setSelectedImage(file);
-            const pngReader = new FileReader()
-            pngReader.onload = e => setSelectedImageSrc(e.target.result)
-            pngReader.readAsDataURL(file)
+            setSelectedImage(file)
+            setShowImageUploadProgress(true)
+            fileReader.onload = e => setSelectedImageSrc(e.target.result)
+            fileReader.readAsDataURL(file)
             break;
           case 'mp4':
             setSelectedVideo(file)
+            setShowVideoUploadProgress(true)
             const blobUrl = URL.createObjectURL(file)
             setSelectedVideoSrc(blobUrl)
             break;
@@ -218,13 +222,20 @@ export default function Chats({profilePicture, selectedRoom}) {
         e.preventDefault()
         if(!newMessage) return
         setNewMessage('')
-        document.querySelector('.files-preview').classList.remove('active-file-preview')
+
         let imageName = null
         let imageUrl = null
         let videoName = null
         let videoUrl = null
 
+        const filesPreview = document.querySelector('.files-preview')
+        const uploadProgWrapper = document.querySelector('.upload-progress-wrapper')
+
         if(selectedImage){
+          if(filesPreview.classList.contains('active-file-preview')) filesPreview.classList.remove('active-file-preview')
+
+          uploadProgWrapper.classList.add('active-upload-progress-wrapper')
+
           const metadata = {
             customMetadata:{
               "uploaderName":auth.currentUser.displayName,
@@ -233,11 +244,22 @@ export default function Chats({profilePicture, selectedRoom}) {
           }
           imageName = nanoid()
           const imageRef = ref(storage, `MessagesImages/${imageName}`)
-          await uploadBytes(imageRef, selectedImage, metadata)
-          await getDownloadURL(imageRef).then(res => imageUrl = res)
+          const imageUploadTask = uploadBytesResumable(imageRef, selectedImage, metadata)
+          const progressBar = document.querySelector('.image-upload-progress')
+          imageUploadTask.on('state_changed', async snapshot => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            progressBar.style.width = `${progress}%`
+          })
+
+          await imageUploadTask
+          await getDownloadURL(imageRef).then(url => imageUrl = url)
         }
 
         if(selectedVideo){
+          if(filesPreview.classList.contains('active-file-preview')) filesPreview.classList.remove('active-file-preview')
+
+          if(!uploadProgWrapper.classList.contains('active-upload-progress-wrapper')) uploadProgWrapper.classList.add('.active-upload-progress-wrapper')
+
           const metadata = {
             customMetadata:{
               "uploaderName":auth.currentUser.displayName,
@@ -246,14 +268,24 @@ export default function Chats({profilePicture, selectedRoom}) {
           }
           videoName = nanoid()
           const videoRef = ref(storage, `MessagesVideos/${videoName}`)
-          await uploadBytes(videoRef, selectedVideo, metadata)
-          await getDownloadURL(videoRef).then(res => videoUrl = res)
+          const videoUploadTask = uploadBytesResumable(videoRef, selectedVideo, metadata)
+          const progressBar = document.querySelector('.video-upload-progress')
+          videoUploadTask.on('state_changed', async snapshot => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            progressBar.style.width = `${progress}%`
+          })
+          await videoUploadTask
+          await getDownloadURL(videoRef).then(url => videoUrl = url)
         }
         
         setSelectedImage(null)
         setSelectedImageSrc(null)
+        setShowImageUploadProgress(false)
         setSelectedVideo(null)
         setSelectedVideoSrc(null)
+        setShowVideoUploadProgress(false)
+        document.querySelector('.files-preview').classList.remove('active-file-preview')
+        uploadProgWrapper.classList.remove('active-upload-progress-wrapper')
 
         const messagesCollection = collection(db, "messages")
         await addDoc(messagesCollection, {
@@ -316,16 +348,23 @@ export default function Chats({profilePicture, selectedRoom}) {
                   })}
                   <div ref={lastMessageRef} className="scroller-div"></div>
                 </div>
-
+                
                 <div className="message-form-wrapper">
                   <form className='message-form' onSubmit={e => sendMessage(e)}>
                     {/* This div will display above the text input so the user can see the selcted file */}
                     <div className="files-preview">
-                      {selectedImage && <img src={selectedImageSrc}/>}
-                      {selectedVideo &&<video controls>
+                      {selectedImage && <img src={selectedImageSrc} className='selected-files selected-picture'/>}
+                      {selectedVideo && <video controls className='selected-files selected-video'>
                         <source src={selectedVideoSrc}/>
                       </video>}
                     </div>
+                      {/* Upload progress bars for the images and videos */}
+                      <div className="upload-progress-wrapper">
+                          {showImageUploadProgress && <div className='image-upload-progress'><div></div></div>}
+                          <div className='image-upload-progress'><div></div></div>
+                          {showVideoUploadProgress && <div className='video-upload-progress'><div></div></div>}
+                          <div className='video-upload-progress'><div></div></div>
+                      </div>
                     <abbr title='Upload image or video' onClick={() => selectFile()}><img src={plusIcon} className='plus-icon'/></abbr>
                     {/* Seperator div between add file button and message input */}
                       <div className="message-input-separator"></div>

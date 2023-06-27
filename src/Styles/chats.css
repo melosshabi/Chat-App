@@ -245,14 +245,39 @@
     height: 10dvh;
     width: 50%;
     position: absolute;
-    top:-85px;
+    top:-95px;
     background-color: rgb(48, 56, 65);
     border:1px solid white;
     display: none;
 }
 .active-file-preview{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+}
+.upload-progress-wrapper{
+    height: 100%;
+    width: 50%;
+    display: none;
+    background-color: var(--lightGray);
+    border-radius: 5px;
+    padding:10px 15px;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+    position: absolute;
+    top:-140%
+}
+.active-upload-progress-wrapper{
+    display: flex;
+}
+.image-upload-progress, .video-upload-progress{
+    width: 0%;
+    height: 20%;
+    border-radius: 8px;
+    background-color: #3b4149;
+    box-shadow: 0 0 5px white;
+    display: flex;
+    transition: all 150ms;
 }
 /* Confirm message deletion modal*/
 .confirm-delete-modal{
@@ -335,6 +360,7 @@
     .fullscreen-image{
         width: 80%;
     }
+
 }
 /* Nest Hub Max */
 @media only screen and (max-width:1280px) and (max-height:800px){
@@ -389,6 +415,9 @@
     }
     .files-preview{
         top:-10.5dvh;
+    }
+    .upload-progress-wrapper{
+        width: 60%;
     }
 }
 /* iPad Air */
@@ -445,6 +474,10 @@
         top:-16dvh;
         left:5dvw;
     }
+    .upload-progress-wrapper{
+        margin-left: 20px;
+        top:-150%;
+    }
 }
 /* iPhone XR */
 @media only screen and (max-width:414px) and (max-height:896px){
@@ -475,8 +508,18 @@
     .save-edit-message{
         left: 65%;
     }
+    .message-form{
+        width: 100%;
+    }
     .files-preview{
         width: 80dvw;
+    }
+    .upload-progress-wrapper{
+        margin-left: 25px;
+    }
+    .image-upload-progress, .video-upload-progress{
+        width: 100%;
+        height: 25%;
     }
 }
 /* Galaxy S21FE */
