@@ -7,7 +7,6 @@ import { auth } from '../firebase-config'
 import logoutIcon from '../SVGs/logout-icon.svg'
 import sidebarIcon from '../SVGs/sidebar-icon.png'
 import Cookies from 'universal-cookie'
-const cookies = new Cookies();
 
   // This function toggles the mobile sidebar
 export function toggleMobileSidebar(){
@@ -58,8 +57,8 @@ export default function Sidebar({isRoomSelected, setIsRoomSelected, setSelectedR
 
       async function logOut(){
         await signOut(auth).then(()=>{
-          localStorage.clear();
-          cookies.remove('auth-token')
+          localStorage.clear()
+          sessionStorage.clear()
           navigate("/signIn")
         })
       }
