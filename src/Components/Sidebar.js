@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {useNavigate, Link} from 'react-router-dom'
 // Firebase
 import { signOut } from 'firebase/auth'
@@ -29,9 +29,17 @@ export function toggleMobileSidebar(){
    }
  }
 
-export default function Sidebar({isRoomSelected, setIsRoomSelected, setSelectedRoom, profilePicture}) {
+export default function Sidebar({isRoomSelected, setIsRoomSelected, setSelectedRoom}) {
 
     const navigate = useNavigate()
+
+    const [profilePicture, setProfilePicture] = useState()
+
+    useEffect(() => {
+      auth.onAuthStateChanged(() => {
+        setProfilePicture(auth.currentUser.photoURL)
+      })
+    }, [])
 
     function leaveRoom(){
         setSelectedRoom(1)

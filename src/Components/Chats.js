@@ -15,8 +15,9 @@ import { nanoid } from 'nanoid'
 // CSS
 import '../Styles/chats.css'
 
-export default function Chats({profilePicture, selectedRoom}) {
+export default function Chats({selectedRoom}) {
 
+    const [profilePicture, setProfilePicture] = useState()
     const [roomMessages, setRoomMessages] = useState([]);
     const [newMessage, setNewMessage] = useState()
     const [messageToDelete, setMessageToDelete] = useState()
@@ -25,6 +26,11 @@ export default function Chats({profilePicture, selectedRoom}) {
     const lastMessageRef = useRef(null);
 
     useEffect(() =>{
+
+        auth.onAuthStateChanged(() => {
+          setProfilePicture(auth.currentUser.uid)
+        })
+
         async function fetchMessages(){
         const messagesRef = collection(db, "messages");
         const queryMessages = query(messagesRef, where("roomSentTo", "==", selectedRoom), orderBy("timeSent"))
@@ -290,7 +296,7 @@ export default function Chats({profilePicture, selectedRoom}) {
         const messagesCollection = collection(db, "messages")
         await addDoc(messagesCollection, {
           message:newMessage, senderID:auth.currentUser.uid, senderName:auth.currentUser.displayName, 
-          senderProfilePicture:auth.currentUser.photoURL, roomSentTo:selectedRoom,
+          senderProfilePicture:profilePicture, roomSentTo:selectedRoom,
           imageName, imageUrl, videoName, videoUrl,
           timeSent:serverTimestamp()
         })
@@ -381,7 +387,7 @@ export default function Chats({profilePicture, selectedRoom}) {
                     <h2>Are you sure you want to delete this message?</h2>
                   
                   <div className="logged-user-message message-to-delete">
-                    {messageToDelete && <p><img src={profilePicture} style={{width:'60px', borderRadius:'50%', display:'inline-block', verticalAlign:'middle'}}/>{messageToDelete.message}</p>}
+                    {messageToDelete && <p><img src={auth.currentUser.photoURL} style={{width:'60px', borderRadius:'50%', display:'inline-block', verticalAlign:'middle'}}/>{messageToDelete.message}</p>}
                     {messageToDelete && <span className='logged-usr-time-msg-sent message-to-delete-date'>{messageToDelete.dateSent} {messageToDelete.timeSent}</span>}
                   </div>
 

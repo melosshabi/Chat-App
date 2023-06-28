@@ -14,13 +14,11 @@ export default function Home() {
 
   const [selectedRoom, setSelectedRoom] = useState(1)
   const [isRoomSelected, setIsRoomSelected] = useState(false)
-  const [profilePicture, setProfilePicture] = useState('')
 
   useEffect(()=>{
 
     auth.onAuthStateChanged(()=>{
       if(!auth.currentUser) navigate('/signIn')
-      else setProfilePicture(auth.currentUser.photoURL)
     })
 
     const sessionSelectedRoom = sessionStorage.getItem('selectedRoom')
@@ -29,8 +27,6 @@ export default function Home() {
       setIsRoomSelected(sessionIsRoomSelected)
       setSelectedRoom(sessionSelectedRoom)
     }
-
-   
   }, [])
   
    function enterRoom(e){
@@ -42,7 +38,7 @@ export default function Home() {
   return (
     <div className='home-container'>
      
-      <Sidebar isRoomSelected={isRoomSelected} setIsRoomSelected={setIsRoomSelected} setSelectedRoom={setSelectedRoom} profilePicture={profilePicture}/>
+      <Sidebar isRoomSelected={isRoomSelected} setIsRoomSelected={setIsRoomSelected} setSelectedRoom={setSelectedRoom}/>
       {/* Room Selection form */}
       {!isRoomSelected && <div className="room-selection-wrapper">
         <div className="room-selection-form-wrapper">
@@ -55,7 +51,7 @@ export default function Home() {
           </div>        
           </div>}
           
-          {isRoomSelected && <Chats key={nanoid()} profilePicture={profilePicture} selectedRoom={selectedRoom}/>}
+          {isRoomSelected && <Chats key={nanoid()} selectedRoom={selectedRoom}/>}
       </div>
   )
 }
