@@ -314,7 +314,7 @@ export default function Chats({selectedRoom}) {
                       if(messageFile.senderID === auth.currentUser.uid){
                         return (
                           <div key={nanoid()} className="logged-user-message-wrapper message-wrapper" onContextMenu={e => toggleMoreOptions(e, index)} onClick={() => document.querySelectorAll('.message-wrapper')[index].querySelector('.logged-user-message-options').classList.remove('active-more-options')}>
-                            <div className='logged-user-message'><img className="logged-user-pfp" src={profilePicture} alt="pfp"/><p className='message'>{messageFile.message}</p></div>
+                            <div className='logged-user-message'><img className="logged-user-pfp" src={messageFile.senderProfilePicture} alt="pfp"/><p className='message'>{messageFile.message}</p></div>
                               {/* Image */}
                               {messageFile.imageUrl && <div className='message-picture-wrapper'><img src={messageFile.imageUrl} className='message-picture' style={{cursor:'pointer'}} onClick={() => toggleImageFullscreen(messageFile.imageUrl)}/></div>}
                               {/* Video */}
