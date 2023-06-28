@@ -17,7 +17,6 @@ import '../Styles/chats.css'
 
 export default function Chats({selectedRoom}) {
 
-    const [profilePicture, setProfilePicture] = useState()
     const [roomMessages, setRoomMessages] = useState([]);
     const [newMessage, setNewMessage] = useState()
     const [messageToDelete, setMessageToDelete] = useState()
@@ -26,10 +25,6 @@ export default function Chats({selectedRoom}) {
     const lastMessageRef = useRef(null);
 
     useEffect(() =>{
-
-        auth.onAuthStateChanged(() => {
-          setProfilePicture(auth.currentUser.uid)
-        })
 
         async function fetchMessages(){
         const messagesRef = collection(db, "messages");
@@ -296,7 +291,7 @@ export default function Chats({selectedRoom}) {
         const messagesCollection = collection(db, "messages")
         await addDoc(messagesCollection, {
           message:newMessage, senderID:auth.currentUser.uid, senderName:auth.currentUser.displayName, 
-          senderProfilePicture:profilePicture, roomSentTo:selectedRoom,
+          senderProfilePicture:auth.currentUser.photoURL, roomSentTo:selectedRoom,
           imageName, imageUrl, videoName, videoUrl,
           timeSent:serverTimestamp()
         })
