@@ -49,7 +49,11 @@ export default function UserProfile() {
   function enableUpdatePictureBtn(newPicture){
     let updatePictureBtn = document.getElementsByClassName('update-profile-picture-btn')[0];
     updatePictureBtn.disabled = false;
-    updatePictureBtn.addEventListener('click', async () =>{
+    updatePictureBtn.addEventListener('click', async () => {
+
+      updatePictureBtn.disabled = true
+      updatePictureBtn.innerText = "Updating..."
+      
       const metadata = {
         customMetadata:{
           "uploaderName":auth.currentUser.displayName,

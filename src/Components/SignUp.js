@@ -3,10 +3,8 @@ import {Link, useNavigate} from 'react-router-dom'
 import '../Styles/sign-up.css'
 import {auth, googleProvider, storage} from '../firebase-config'
 import { createUserWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth'
-import Cookies from 'universal-cookie'
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage'
 
-const cookies = new Cookies();
 export default function SignUp() {
     
     const navigate = useNavigate();
@@ -16,7 +14,6 @@ export default function SignUp() {
             if(auth.currentUser){
                 localStorage.setItem('name', registerName)
                 localStorage.setItem('email', registerEmail)
-                cookies.set("auth-token", auth.currentUser.refreshToken)
                 navigate('/')
             } 
         })
@@ -37,11 +34,16 @@ export default function SignUp() {
                 .then(res => {
                     localStorage.setItem('name', registerName)
                     localStorage.setItem('email', registerEmail)
-                    cookies.set("auth-token", res.user.refreshToken)
                 });
 
                 const storageRef = ref(storage, `Profile Pictures/ProfilePictureOf${auth.currentUser.uid}`)
-                await uploadBytes(storageRef, registerProfilePicture)
+                const metadata = {
+                    customMetadata:{
+                      "uploaderName":auth.currentUser.displayName,
+                      "uploaderId":auth.currentUser.uid
+                    }
+                  }
+                await uploadBytes(storageRef, registerProfilePicture, metadata)
                 const pictureUrl = await getDownloadURL(storageRef)
                 await updateProfile(auth.currentUser, {displayName:registerName, photoURL:pictureUrl})
                 .then(() => navigate('/'))
@@ -61,7 +63,6 @@ export default function SignUp() {
         .then(res => {
             localStorage.setItem('name', res.user.displayName)
             localStorage.setItem('email', res.user.email)
-            cookies.set("auth-token", res.user.refreshToken)
             navigate('/')
         })
     }

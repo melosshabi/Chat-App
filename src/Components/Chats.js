@@ -102,7 +102,6 @@ export default function Chats({profilePicture, selectedRoom}) {
         lastMessageRef.current?.scrollIntoView();
       }, [roomMessages])
 
-      // This variable is used to decide whether to show the progress bars wrapper or not
       const [selectedImage, setSelectedImage] = useState(null)
       const [selectedImageSrc, setSelectedImageSrc] = useState(null)
       const [showImageUploadProgress, setShowImageUploadProgress] = useState(false)
@@ -121,6 +120,7 @@ export default function Chats({profilePicture, selectedRoom}) {
         return parts[parts.length - 1]
       }
 
+      // This function stores the url of a selected file from the user to show on the preview div above the text input
       function handleFileChange(file){
         const extension = getExtension(file.name)
         const fileReader = new FileReader()
