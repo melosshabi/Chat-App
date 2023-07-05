@@ -30,7 +30,6 @@ export default function SignIn() {
             .then(res =>{
                 localStorage.setItem('name', res.user.displayName)
                 localStorage.setItem('email', res.user.email)
-                cookies.set("auth-token", res.user.refreshToken)
                 navigate('/')
             })
             }catch(err){
@@ -50,7 +49,6 @@ export default function SignIn() {
         .then(res => {
             localStorage.setItem('name', res.user.displayName)
             localStorage.setItem('email', res.user.email)
-            cookies.set("auth-token", res.user.refreshToken)
             navigate('/')
         })
     }
