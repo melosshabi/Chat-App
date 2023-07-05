@@ -3,9 +3,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import '../Styles/sign-in.css'
 import {auth, googleProvider} from '../firebase-config'
 import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth'
-import Cookies from 'universal-cookie';
 
-const cookies = new Cookies();
 export default function SignIn() {
 
     const navigate = useNavigate();
@@ -15,7 +13,6 @@ export default function SignIn() {
             if(auth.currentUser){
                 localStorage.setItem('name', auth.currentUser.displayName)
                 localStorage.setItem('email', auth.currentUser.email)
-                cookies.set("auth-token", auth.currentUser.refreshToken)
                 navigate('/')
             } 
         })
