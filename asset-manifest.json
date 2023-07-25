@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/chat-app/static/css/main.d4e00063.css",
-    "main.js": "/chat-app/static/js/main.b3a5242c.js",
+    "main.css": "/chat-app/static/css/main.96c1495d.css",
+    "main.js": "/chat-app/static/js/main.a1531066.js",
     "static/media/logout-icon.svg": "/chat-app/static/media/logout-icon.d66694e430e5b987bf6aef9360a48d11.svg",
     "static/media/user-icon.svg": "/chat-app/static/media/user-icon.32bda83339b76cc357271df402f830f9.svg",
     "index.html": "/chat-app/index.html",
     "static/media/arrow.svg": "/chat-app/static/media/arrow.fd92f2a220a80d77320be354fc571ff4.svg",
-    "main.d4e00063.css.map": "/chat-app/static/css/main.d4e00063.css.map",
-    "main.b3a5242c.js.map": "/chat-app/static/js/main.b3a5242c.js.map"
+    "main.96c1495d.css.map": "/chat-app/static/css/main.96c1495d.css.map",
+    "main.a1531066.js.map": "/chat-app/static/js/main.a1531066.js.map"
   },
   "entrypoints": [
-    "static/css/main.d4e00063.css",
-    "static/js/main.b3a5242c.js"
+    "static/css/main.96c1495d.css",
+    "static/js/main.a1531066.js"
   ]
 }
