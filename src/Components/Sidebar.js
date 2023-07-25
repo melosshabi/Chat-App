@@ -6,7 +6,6 @@ import { auth } from '../firebase-config'
 // Icons
 import logoutIcon from '../SVGs/logout-icon.svg'
 import sidebarIcon from '../SVGs/sidebar-icon.png'
-import Cookies from 'universal-cookie'
 
   // This function toggles the mobile sidebar
 export function toggleMobileSidebar(){
@@ -33,10 +32,15 @@ export default function Sidebar({isRoomSelected, setIsRoomSelected, setSelectedR
     const navigate = useNavigate()
 
     const [profilePicture, setProfilePicture] = useState()
+    const [username, setUsername] = useState()
 
     useEffect(() => {
       auth.onAuthStateChanged(() => {
-        setProfilePicture(auth.currentUser.photoURL)
+        if(auth.currentUser !== null){
+          setProfilePicture(auth.currentUser.photoURL)
+          setUsername(auth.currentUser.displayName)
+        }
+        
       })
     }, [])
 
@@ -71,7 +75,7 @@ export default function Sidebar({isRoomSelected, setIsRoomSelected, setSelectedR
        <div className="user-info">
          <div className="user-name-pfp"> 
          <Link to="/userProfile"><img className="user-icon" src={profilePicture} alt="User Icon"/></Link>
-         <p>{localStorage.getItem('name')}</p>
+         <p>{username}</p>
          <div className="sign-out-div">
          <button className='logout-btn' onClick={logOut}><img className="logout-img" src={logoutIcon} alt="log out icon"/></button>
          </div>
@@ -96,7 +100,7 @@ export default function Sidebar({isRoomSelected, setIsRoomSelected, setSelectedR
 
          <div className="user-info-mobile">
          <Link to="/userProfile"><img className="user-icon-mobile" src={profilePicture} alt="User Icon"/></Link>
-         <p>{localStorage.getItem('name')}</p>
+         <p>{username}</p>
          <div className="sign-out-div-mobile">
          <button className='logout-btn-mobile' onClick={logOut}><img className="logout-img-mobile" src={logoutIcon} alt="log out icon"/></button>
          </div>

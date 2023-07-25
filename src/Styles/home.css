@@ -1,19 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
 
-/* Sidebar Styles */
 .home-container{
     height: 100dvh;
     width: 100dvw;
     font-family: 'Figtree', sans-serif;
     display: flex;
-    /* overflow: hidden; */
-    background-color: #272c31;
+    background-color: var(--gray2);
 }
+/* Sidebar Styles */
 .sidebar{
     width: 20dvw;
     height: 100dvh;
-    /* background-color: cyan!important; */
-    background-color: #303841;
+    background-color: var(--sidebar);
     border-right: 1px solid white;
     display: flex;
     align-items: flex-end;
@@ -28,7 +26,7 @@
     position: absolute;
     top:15px;
     left:5px;
-    background-color: rgb(46, 51, 58);
+    background-color: var(--gray);
     padding:0 5px;
     border:none;
     border-radius: 5px;
@@ -47,7 +45,7 @@
     height: 6%;
     width: 100%;
     color:white;
-    background-color: #2e333a;
+    background-color: var(--gray);
     padding-bottom: 2px;
     display: flex;
     justify-content: flex-start;
@@ -81,7 +79,7 @@
     width: 20px;
 }
 .logout-btn:hover{
-    background-color: rgb(46, 51, 58);
+    background-color: var(--lightGray);
 }
 .more-options-div{
     margin-right: 10%;
@@ -105,7 +103,7 @@
 .option-list-div{
     width: 150px;
     height: 50px;
-    background-color: rgb(39, 44, 49);
+    background-color: var(--darkGray);
     position:absolute;
     right:-55px;
     top:-68px;
@@ -136,11 +134,10 @@
     background-color: rgba(255, 255, 255, .1);
 }
 /* Room selection and chat styles */
-
 .room-selection-wrapper{
     width: 70vw;
     height: 100%;
-    background-color: #272c31;
+    background-color: var(--gray2);
     color:white;
     display: flex;
     align-items: center;
@@ -151,7 +148,8 @@
     height: 40%;
     width: 40%;
     padding:25px 40px;
-    background-color: #2e333a;
+    background-color: var(--gray);
+    box-shadow: 0 0 5px rgba(255, 255, 255, .2);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -181,7 +179,7 @@
     cursor: pointer;
     border: none;
     border-radius: 3px;
-    background:rgb(48,56,65);
+    background-color: var(--gray3);
     color:white;
     box-shadow:3px 2px 5px rgba(255, 255, 255, .2);
     transition: all 200ms;
@@ -233,7 +231,7 @@
     .sidebar-mobile{
         height: 100vh;
         width: 0;
-        background-color: rgb(48, 56, 65);
+        background-color: var(--gray3);
         border-right: 1px solid white;
         display: flex;
         align-items: flex-end;
@@ -249,7 +247,7 @@
     .leave-room-btn-mobile{
         width: 35%;
         height: 5%;
-        background-color: rgb(46, 51, 58);
+        background-color: var(--gray);
         color:white;
         font-size: 1.5em;
         border: none;
@@ -286,7 +284,7 @@
     .user-info-mobile{
         height: 7%;
         width: 100%;
-        background-color: #2e333a;
+        background-color: var(--gray);
         color:white;
         font-size: 1.8em;
         display: none;
@@ -330,7 +328,7 @@
         position: absolute;
         top:-60px;
         left:-130px;
-        background-color: rgb(39, 44, 49);
+        background-color: var(--darkGray);
         box-shadow: 1px 1px 3px white;
         border-radius: 5px;
         display: none;

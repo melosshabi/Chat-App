@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // Components
 import Chats from './Chats'
-import Sidebar from './Sidebar'
+import Sidebar, { toggleMobileSidebar } from './Sidebar'
 import {auth} from '../firebase-config'
 import { nanoid } from 'nanoid'
+// Images
+import sidebarIcon from '../SVGs/sidebar-icon.png'
 // CSS
 import '../Styles/home.css'
 
@@ -41,6 +43,7 @@ export default function Home() {
       <Sidebar isRoomSelected={isRoomSelected} setIsRoomSelected={setIsRoomSelected} setSelectedRoom={setSelectedRoom}/>
       {/* Room Selection form */}
       {!isRoomSelected && <div className="room-selection-wrapper">
+        <div className="mobile-sidebar-btn" style={{left:20}} onClick={toggleMobileSidebar}><img src={sidebarIcon} /></div>
         <div className="room-selection-form-wrapper">
           <h1>Select a Room</h1>
           <p>1-100</p>

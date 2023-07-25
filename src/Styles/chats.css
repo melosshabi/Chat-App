@@ -1,8 +1,3 @@
-:root{
-    --gray:#2e333a;
-    --lightGray:#363a41;
-    --lightRed:rgb(226, 74, 74);
-}
 .chats-wrapper{
     height: 99.5dvh;
     width: 80dvw;
@@ -14,6 +9,7 @@
     font-size: 2em;
     height: 5%;
     border-bottom: 1px solid white;
+    background-color: var(--gray);
 }
 .messages-wrapper{
     height: 100%;
@@ -27,6 +23,7 @@
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
+    background-color: var(--gray2);
 }
 /* Others messages styles */
 .others-message-wrapper{

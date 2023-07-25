@@ -4,8 +4,6 @@ import { useNavigate, Link } from 'react-router-dom'
 import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
 import {auth, storage} from '../firebase-config'
 import { sendPasswordResetEmail, signOut, updateEmail, updateProfile } from 'firebase/auth'
-// Cookies library
-import Cookies from 'universal-cookie';
 // CSS
 import '../Styles/user-profile.css'
 // Icons
@@ -14,22 +12,24 @@ import userIcon from '../SVGs/user-icon.svg'
 import logoutIcon from '../SVGs/logout-icon.svg'
 import sidebarIcon from '../SVGs/sidebar-icon.png'
 
-const cookies = new Cookies();
-
 export default function UserProfile() {
 
   const navigate = useNavigate();
 
+  
+  const [name, setName] = useState()
+  const [email, setEmail] = useState()
   const [profilePicture, setProfilePicture] = useState();
   
   useEffect(()=>
     auth.onAuthStateChanged(() => {
-      if(auth.currentUser) setProfilePicture(auth.currentUser.photoURL)
+      if(auth.currentUser){
+        setName(auth.currentUser.displayName)
+        setEmail(auth.currentUser.email)
+        setProfilePicture(auth.currentUser.photoURL)
+      } 
       else navigate('/signIn')
     }), [])
-
-  const [name, setName] = useState(localStorage.getItem('name'))
-  const [email, setEmail] = useState(localStorage.getItem('email'))
 
   const handleNameChange = e =>{
     let newName = e.target.value;
@@ -104,7 +104,6 @@ export default function UserProfile() {
   // Log out function
   async function logOut(){
     localStorage.clear();
-    cookies.remove('authToken')
     await signOut(auth)
     .then(() => navigate('/SignIn'))
   }

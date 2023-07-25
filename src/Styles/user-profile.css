@@ -9,7 +9,7 @@
 .profile-sidebar{
     width: 20vw;
     height: 100vh;
-    background-color: rgb(48, 56, 65);
+    background-color: var(--gray3);
     color:white;
     text-align: center;
     position: relative;
@@ -33,7 +33,7 @@
 }
 .profile-btn-wrapper{
     height: 10%;
-    background-color: rgb(39, 44, 49);
+    background-color: var(--darkGray);
     font-size: 1.9em;
     display: flex;
     justify-content: center;
@@ -46,7 +46,7 @@
 .profile-details{
     width: 80vw;
     height: 100vh;
-    background-color: rgb(39, 44, 49);
+    background-color: var(--darkGray);
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -56,6 +56,7 @@
     width: 50%;
     height: 25%;
     background-color: rgb(46, 51, 58);
+    background-color: var(--lightGray2);
     color:white;
     border-radius: 10px;
     display: flex;
@@ -81,7 +82,7 @@
 .update-profile-picture-btn{
     font-size: 1.5em;
     color:white;
-    background: rgb(48, 56, 65);
+    background: var(--gray3);
     border: none;
     border-radius: 10px;
     box-shadow:2px 2px 3px rgba(255, 255, 255, .2);
@@ -90,7 +91,7 @@
     transition: all 200ms;
 }
 .update-profile-picture-btn:hover{
-    background: rgb(61, 71, 82);
+    background: var(--gray4);
 }
 .update-profile-picture-btn:active{
     background: rgb(49, 57, 66);
@@ -100,14 +101,14 @@
     cursor: not-allowed;
 }
 .update-profile-picture-btn:disabled:hover{
-    background: rgb(48, 56, 65);
+    background: var(--gray3);
 }
 
 /* User Information */
 .user-information-wrapper{
     height: 45%;
     width: 50%;
-    background-color: rgb(46, 51, 58);
+    background-color: var(--lightGray2);
     color:white;
     border-radius: 10px;
     text-align: center;
@@ -159,7 +160,7 @@
 .edit-btn, .save-btn{
     font-size: 1.3em;
     color:white;
-    background-color: rgb(48, 56, 65);
+    background-color: var(--gray3);
     border:none;
     border-radius: 10px;
     padding:10px 50px;
@@ -168,7 +169,7 @@
     transition: all 200ms;
 }
 .edit-btn:hover, .save-btn:hover{
-    background-color: rgb(61, 71, 82);
+    background-color: var(--gray4);
 }
 .edit-btn:active, .save-btn:active{
     background-color:rgb(49, 57, 66);
@@ -185,11 +186,11 @@
 .animation-div{
     width: 100%;
     height: 100%;
-    background-color: rgb(46, 51, 58);
+    background-color: var(--lightGray2);
     transition: all 200ms;
 }
 .animation-div:hover{
-    background-color: rgb(61, 71, 82);
+    background-color: var(--gray4);
 }
 .animation-div:hover .logout-btn{
     transform: translateX(-5px);
@@ -203,11 +204,11 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    background-color: rgb(46, 51, 58);
+    background-color: var(--lightGray2);
     transition: all 200ms;
 }
 .logout-btn:hover{
-    background-color: rgb(61, 71, 82);    
+    background-color: var(--gray4);    
 }
 .logout-icon{
     width: 50px;

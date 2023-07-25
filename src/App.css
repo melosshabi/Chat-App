@@ -1,0 +1,11 @@
+:root{
+    --gray:#2e333a;
+    --gray2:#272c31;
+    --gray3:rgb(48,56,65);
+    --gray4:rgb(61, 71, 82);
+    --lightGray:#363a41;
+    --lightGray2:rgb(46, 51, 58);
+    --darkGray:rgb(39, 44, 49);
+    --lightRed:rgb(226, 74, 74);
+    --sidebar:#303841;
+}

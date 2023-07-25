@@ -3,6 +3,7 @@ import SignUp from './Components/SignUp';
 import Home from './Components/Home';
 import UserProfile from './Components/UserProfile';
 import {HashRouter, Routes, Route} from 'react-router-dom'
+import './App.css'
 
 function App() {
 
